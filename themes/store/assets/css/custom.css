@@ -1,0 +1,67 @@
+/* ----------------------------------------------------------------
+	Custom CSS
+
+	Add all your Custom Styled CSS here for New Styles or
+	Overwriting Default Theme Styles for Better Handling Updates
+-----------------------------------------------------------------*/
+.promo-full.bottommargin-lg{
+	background-image: url('../images/3.jpg');
+}
+.posts-sm .entry-image{
+  	height: 64px;
+}
+.posts-sm .entry-image > a,
+.posts-sm .entry-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.product-short ul {
+	padding-left: 15px;
+}
+
+.ui-widget-content table {
+	width: 100%;
+	margin-bottom: 1rem;
+	color: #212529;
+	border: 1px solid #dee2e6;
+}
+.ui-widget-content table > tbody > tr:nth-child(2n+1){
+  	background-color: rgba(0,0,0,0.05);
+}
+.ui-widget-content table td{
+	padding: 0.75rem;
+  	vertical-align: top;
+	border: 1px solid #dee2e6;
+}
+.box-style-code{
+	padding: 8px 30px 8px 15px;
+	background-color: #1abc9c;
+	color: #fff;
+	border-radius: 10px;
+	position: relative;
+}
+.shop__cart-delete-item{
+	position: absolute;
+	color: #ff3535;
+	top: 6px;
+	right: 10px;
+}
+.invalid-feedback.visible{
+	display: block;
+}
+.top-links-item > form {
+	margin: 0;
+}
+.top-links-item > form > a {
+	display: block;
+	padding: 12px;
+	font-size: 0.75rem;
+	line-height: 20px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #666;
+}
+.top-links-sub-menu .top-links-item > a > img {
+	height: auto;
+}

@@ -1,0 +1,4 @@
+<?php if($value): ?>
+	<?php $district = \EgalHTN\VietnameseAddress\Classes\District::getContent($model->cityid, $value) ?>
+	<p><?php echo isset($district['name_with_type']) ? $district['name_with_type'] : ''; ?></p>
+<?php endif ?>	

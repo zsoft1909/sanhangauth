@@ -1,0 +1,36 @@
+plugin:
+    name: 'zsoft.base::lang.plugin.name'
+    description: 'zsoft.base::lang.plugin.description'
+    author: Zsoft
+    icon: oc-icon-connectdevelop
+    homepage: 'https://zsoft.com.vn'
+navigation:
+    main-menu-item:
+        label: Template
+        url: zsoft/base/setting/update/1
+        icon: icon-puzzle-piece
+        sideMenu:
+            side-menu-item:
+                label: General
+                url: zsoft/base/setting/update/1
+                icon: icon-cogs
+            side-menu-item3:
+                label: Menu
+                url: zsoft/base/navigations
+                icon: icon-sitemap
+            side-menu-item4:
+                label: Slider
+                url: zsoft/base/slider
+                icon: icon-sliders
+            side-menu-item2:
+                label: 'Liên hệ'
+                url: zsoft/base/contact
+                icon: icon-envelope-o
+            side-menu-item5:
+                label: 'Băng quảng cáo'
+                url: zsoft/base/advertise
+                icon: icon-image
+            side-menu-item6:
+                label: Comment
+                url: zsoft/base/comments
+                icon: icon-comment-o

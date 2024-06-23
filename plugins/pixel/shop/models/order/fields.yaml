@@ -1,0 +1,38 @@
+fields:
+    id:
+        span: full
+        type: partial
+        cssClass: scoreboard-modal-wrap
+
+    _actions:
+        span: full
+        type: partial
+
+    items:
+        type: partial
+
+    user:
+        type: partial
+    
+
+    customer_name:
+        label: 'Họ và tên'
+        type: text
+    customer_phone:
+        label: 'Số điện thoại'
+        type: text
+    customer_email:
+        label: 'Email'
+        type: text
+    customer_address:
+        label: 'Địa chỉ giao hàng'
+        type: text
+
+# secondaryTabs:
+#     fields:
+#         items:
+#             type: partial
+#             tab: 'pixel.shop::lang.fields.items'
+#         activity:
+#             type: partial
+#             tab: 'pixel.shop::lang.fields.activity'

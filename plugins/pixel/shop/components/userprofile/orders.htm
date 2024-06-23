@@ -1,0 +1,46 @@
+<div id="orders-content">
+	<div class="uk-overflow-auto">
+		<table class="uk-table uk-table-striped uk-table-hover">
+			<thead>
+				<tr>
+					<th width="80">ID</th>
+					<th width="140">Thời gian</th>
+					<th>Sản phẩm</th>
+					<th width="180">Trạng thái</th>
+					<th width="120" class="uk-text-right">Tổng tiền</th>
+					<th width="100">Hành động</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for order in user.orders %}
+				<tr>
+					<th>
+						#{{ order.getOrderID() }}
+					</th>
+					<td>
+						{{ order.created_at.diffForHumans() }}
+					</td>
+					<td>
+						{% for item in order.items %}
+							<small>x{{ item.quantity }} &nbsp; {{ item.title }} ({{ item.total|currency({in:order.currency, format: 'short' }) }})</small><br>
+						{% endfor %}
+					</td>
+					<td>
+						<span class="label label-default status-{{ order.status }}">
+							{{ ('pixel.shop::lang.status.' ~ order.status)|trans }}
+						</span>
+					</td>
+					<td class="uk-text-right">
+						{{ order.total|currency({in: order.currency, format: 'short' }) }}
+					</td>
+					<td>
+						<a href="#" data-request="{{ __SELF__ }}::onLoadOrder" data-request-data="id: {{ order.id }}" class="btn btn-default btn-xs">
+							<i class="fas fa-search"></i> {{ 'pixel.shop::lang.fields.view'|trans }}
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>

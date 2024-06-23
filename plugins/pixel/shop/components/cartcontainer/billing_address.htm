@@ -1,0 +1,7 @@
+{% if __SELF__.prepareFields('billing') %}
+	<div class="row mb-0" >
+	    {% for field in __SELF__.prepareFields('billing') %}
+	    	{% partial '@custom_fields' field=field group="billing" %}
+	    {% endfor %}
+	</div>
+{% endif %}

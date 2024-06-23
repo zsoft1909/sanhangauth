@@ -1,0 +1,41 @@
+fields:
+    module:
+        label: Module
+        options:
+            blog: 'Bài viết'
+            product: 'Sản phẩm'
+        showSearch: true
+        span: auto
+        context:
+            - create
+            - preview
+        type: dropdown
+    moduleid:
+        label: Link
+        span: auto
+        type: text
+    name:
+        label: Name
+        span: auto
+        type: text
+    email:
+        label: Email
+        span: auto
+        type: text
+    website:
+        label: Website
+        span: auto
+        type: text
+    rating:
+        label: Rating
+        span: auto
+        type: text
+    status:
+        label: Status
+        span: full
+        type: switch
+    content:
+        label: Content
+        size: ''
+        span: auto
+        type: textarea

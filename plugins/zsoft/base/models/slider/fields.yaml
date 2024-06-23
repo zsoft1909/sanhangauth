@@ -1,0 +1,20 @@
+fields:
+    name:
+        label: 'Tên slider ảnh'
+        span: auto
+        type: text
+    target:
+        label: 'Link điều hướng'
+        size: large
+        span: full
+        type: textarea
+    image:
+        label: Slider Ảnh
+        mode: image
+        span: full
+        type: mediafinder
+    status:
+        label: 'Trạng thái'
+        span: full
+        default: 1
+        type: switch

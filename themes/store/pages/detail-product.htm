@@ -1,0 +1,321 @@
+title = "Chi tiết sản phẩm"
+url = "/:slug"
+layout = "default"
+is_hidden = 0
+
+[shopProductsDetails]
+slug = "{{ :slug }}"
+==
+function onEnd(){
+	$this->addJs('/plugins/pixel/shop/assets/js/product.js');
+	$galleryVariants = [];
+	if ($this['product']->is_with_variants){
+		foreach ($this['product']->variants as $key => $variant) {
+			if ($variant['variant'] == 'Color'){
+				foreach ($variant['items'] as $k => $item){
+					$galleryVariants[] = $item['image'];
+				}
+			}
+		}
+	}
+
+	$this['galleryVariants'] = $galleryVariants;
+}
+==
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+	<div class="container clearfix">
+		<h1>{{ product.name }}</h1>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ url('/') }}">{{ 'Home'|_ }}</a>
+			</li>
+			{% for key, cat in category.getParents() %}
+                <li class="breadcrumb-item">
+                    <a href="{{ 'category-product'|page({slug: cat.slug}) }}" title="{{ cat.name }}">{{ cat.name }}</a>
+                </li>
+            {% endfor %}
+            <li class="breadcrumb-item">
+            	<a href="{{ 'category-product'|page({slug: category.slug}) }}" title="{{ category.name }}">{{ category.name }}</a>
+            </li>
+		</ol>
+	</div>
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<div class="single-product">
+				<div class="product">
+					<div class="row gutter-40">
+						<div class="col-md-6">
+							<div class="product-image">
+								{% if galleryVariants is not empty %}
+									<div id="oc-shop" class="owl-carousel image-carousel carousel-widget custom-js">
+										{% for image in galleryVariants %}
+											<div class="oc-item">
+												<a href="#"><img src="{{ image|media }}" alt=""/></a>
+											</div>
+										{% endfor %}
+									</div>
+								{% else %}
+									{% if product.gallery.count > 0 %}
+				                        <div class="fslider" data-pagi="false">
+				                            <div class="flexslider">
+				                                <div class="slider-wrap">
+				                                    {% for image in product.gallery %}
+				                                        <div class="slide">
+				                                            <a href="{{ image.getPath() }}" title="{{ product.name }}">
+				                                                <img src="{{ image.getPath() }}" alt="{{ product.name }}">
+				                                            </a>
+				                                        </div>
+				                                    {% endfor %}
+				                                </div>
+				                            </div>
+				                        </div>
+				                    {% endif %}
+								{% endif %}
+								{% if product.is_on_sale %}
+									<div class="sale-flash badge badge-danger p-2">Sale!</div>
+								{% endif %}
+							</div><!-- Product Single - Gallery End -->
+						</div>
+
+						<div class="col-md-6 product-desc">
+							<div class="d-flex align-items-center justify-content-between">
+								<!-- Product Single - Price
+								============================================= -->
+								<div class="product-price box_detail_product" data-currency="{{ product.getDefaultCurrencySymbol() }}">
+									{% if product.is_on_sale %}
+										<del>{{ product.getOldPrice()|currency({format: 'short'}) }}</del> 
+									{% endif %}
+									<ins>{{ product.price|currency({format: 'short'}) }}</ins>
+								</div><!-- Product Single - Price End -->
+								<!-- Product Single - Rating
+								============================================= -->
+								<div class="product-rating">
+									{{ product.getRatingIcon()|raw }}
+								</div><!-- Product Single - Rating End -->
+							</div>
+							<div class="line"></div>
+
+							<!-- Product Single - Quantity & Cart Button
+							============================================= -->
+							<form action="" method="post" accept-charset="utf-8">
+								<input type="hidden" name="base_price" value="{{ product.price }}" autocomplete="off">
+								<input type="hidden" name="old_price" value="{{ product.getOldPrice(false) }}" autocomplete="off">
+								<input type="hidden" name="base_price_with_tax" value="{{ product.price }}" autocomplete="off">
+								<input type="hidden" name="old_price_with_tax" value="{{ product.getOldPrice() }}" autocomplete="off">
+								<div class="cart mb-0 d-flex justify-content-between align-items-center">
+									<div class="quantity clearfix">
+										<input type="button" value="-" class="minus">
+										<input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty" />
+										<input type="button" value="+" class="plus">
+									</div>
+									<button type="submit" class="add-to-cart button m-0 ajax-addtocart" 
+										data-attach-loading="" data-request-form data-request="onAddToCart" 
+										data-request-flash data-request-success="CartButton.onSuccess(data)">{{ 'Add to cart'|_ }}</button>
+								</div><!-- Product Single - Quantity & Cart Button End -->
+								<input type="hidden" name="id" value="{{ product.id }}">
+								<input type="hidden" name="price" value="{{ product.price }}">
+								<input type="hidden" name="options" value="">
+								<input type="hidden" name="options_index" value="">
+								<div class="line"></div>
+
+								{% if product.is_with_variants %}
+									<div class="row align-items-center">
+										{% for variant in product.variants %}
+											<div class="col-sm-6 product-variant">
+												<h5 class="font-weight-medium mb-3">
+													Select {{ variant.variant }}:
+													{% if variant.variant == 'Color'  %}
+														<span class="product-color-value ml-1 font-weight-semibold"></span>
+													{% endif %}
+												</h5>
+												{% if variant.variant == 'Color' %}
+													<div id="product-color-dots" class="owl-dots">
+														{% for option in variant.items %}
+															<button role="radio" class="owl-dot item-type variant-option" data-value="{{ option.val }}" data-color="{{ option.code }}" data-price="{{ product.getPriceOption(option.price) }}" 
+															data-tax={{ product.getTaxOption(option.price) }} data-quantity="{{ option.quantity }}" 
+															data-value="{{ option.ref }}">{{ option.val }}</button>
+														{% endfor %}
+													</div>
+												{% else %}
+													<div class="btn-group-toggle">
+														{% for option in variant.items %}
+															<div class="btn btn-sm btn-outline-secondary font-weight-normal ls0 nott item-type variant-option" data-price="{{ product.getPriceOption(option.price) }}" 
+																data-tax={{ product.getTaxOption(option.price) }} data-quantity="{{ option.quantity }}" 
+																data-value="{{ option.ref }}">
+																<span>{{ option.val }}</span>
+															</div>
+														{% endfor %}
+													</div>
+												{% endif %}
+												<input type="hidden" name="option[{{ product.slugOption(variant.variant) }}]" 
+												class="form-control shop__product-input" data-label="{{ variant.variant }}" 
+												data-slug="{{ variant.id }}">
+											</div>
+										{% endfor %}
+									</div>
+								{% endif %}
+							</form>
+
+							<div class="line"></div>
+
+							<!-- Product Single - Short Description
+							============================================= -->
+							<div class="product-short">{{ product.short_description|raw }}</div>
+							<!-- Product Single - Meta
+							============================================= -->
+							<div class="card product-meta">
+								<div class="card-body">
+									<span itemprop="productID" class="sku_wrapper">SKU: <span class="sku">{{ product.code }}</span></span>
+									<span class="posted_in">Category: 
+										<a href="{{ 'category-product'|page({slug: category.slug}) }}" rel="tag">{{ category.name }}</a>
+									</span>
+									{% if product.tags is not empty %}
+										<span class="tagged_as">Tags: 
+											{% for k, tag in product.tags %}
+												{% if tag is not empty %}
+													{{ k != 0 ? ',' : ''}}
+													<a href="{{ 'tag-product'|page({tag: tag}) }}" rel="tag">{{ tag }}</a>
+												{% endif %}
+											{% endfor %}
+										</span>
+									{% endif %}
+								</div>
+							</div><!-- Product Single - Meta End -->
+
+							<div class="tabs clearfix my-5 mb-0" id="tab-1">
+
+								<ul class="tab-nav clearfix">
+									<li><a href="#tabs-1"><i class="icon-align-justify2"></i><span class="d-none d-md-inline-block"> {{ 'Description'|_ }}</span></a></li>
+									<li><a href="#tabs-2"><i class="icon-info-sign"></i><span class="d-none d-md-inline-block"> {{ 'Additional Information'|_ }}</span></a></li>
+									<li><a href="#tabs-3"><i class="icon-star3"></i><span class="d-none d-md-inline-block"> {{ 'Reviews'|_ }} ({{ product.comments.count }})</span></a></li>
+								</ul>
+
+								<div class="tab-container">
+
+									<div class="tab-content clearfix" id="tabs-1">
+										{{ product.description|raw }}
+									</div>
+									<div class="tab-content clearfix" id="tabs-2">
+										{{ product.additional|raw }}
+									</div>
+									<div class="tab-content clearfix" id="tabs-3">
+										{% partial 'comment/product' type='product' id=product.id %}
+									</div>
+								</div>
+
+							</div>
+
+							<!-- Product Single - Share
+							============================================= -->
+							<div class="si-share d-flex justify-content-between align-items-center mt-4">
+								<span>Share:</span>
+								<div>
+									<a href="#" class="social-icon si-borderless si-facebook">
+										<i class="icon-facebook"></i>
+										<i class="icon-facebook"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-twitter">
+										<i class="icon-twitter"></i>
+										<i class="icon-twitter"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-pinterest">
+										<i class="icon-pinterest"></i>
+										<i class="icon-pinterest"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-gplus">
+										<i class="icon-gplus"></i>
+										<i class="icon-gplus"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-rss">
+										<i class="icon-rss"></i>
+										<i class="icon-rss"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-email3">
+										<i class="icon-email3"></i>
+										<i class="icon-email3"></i>
+									</a>
+								</div>
+							</div><!-- Product Single - Share End -->
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="line"></div>
+
+			{% if relatedProducts is not empty %}
+				<div class="w-100">
+					<h4>{{ 'Related Products'|_ }}</h4>
+					<div class="owl-carousel product-carousel carousel-widget" data-margin="30" data-pagi="false" data-autoplay="5000" data-items-xs="1" data-items-md="2" data-items-lg="3" data-items-xl="4">
+						{% for k, val in relatedProducts %}
+							<div class="oc-item">
+								<div class="product">
+									<div class="product-image">
+										<a href="{{ 'detail-product'|page({slug: val.slug}) }}" title="{{ val.name }}">
+	                                        <img src="{{ val.image_default|media }}" alt="{{ val.name }}">
+	                                    </a>
+										<div class="bg-overlay">
+											<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
+												<a href="#" class="btn btn-dark mr-2"><i class="icon-shopping-cart"></i></a>
+												<a href="{{ 'detail-product'|page({slug: product.slug}) }}?display=popup" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
+											</div>
+											<div class="bg-overlay-bg bg-transparent"></div>
+										</div>
+									</div>
+									<div class="product-desc center">
+										<div class="product-title">
+											<h3><a href="{{ 'detail-product'|page({slug: val.slug}) }}">{{ val.name }}</a></h3>
+										</div>
+										<div class="product-price">
+											{% if val.is_on_sale %}
+												<del>{{ val.getOldPrice()|currency({format: 'short'}) }}</del> 
+												<ins>{{ val.price|currency({format: 'short'}) }}</ins>
+											{% else %}
+												{{ val.price|currency({format: 'short'}) }}
+											{% endif %}
+										</div>
+										<div class="product-rating">{{ product.getRatingIcon()|raw }}</div>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</section><!-- #content end -->
+
+<style>
+	#product-color-dots .owl-dot {
+		display: inline-block;
+		background-color: transparent;
+		width: 20px;
+		height: 20px;
+		margin: 0 2px;
+		border-radius: 50%;
+		cursor: pointer;
+		border: 2px solid #FFF;
+		text-indent: -999px;
+  		overflow: hidden;
+		box-shadow: 0 0 0 1px rgba(0,0,0,0);
+		transform: scale(1);
+		-webkit-transition: box-shadow .2s ease, transform .2s ease;
+		-o-transition: box-shadow .2s ease, transform .2s ease;
+		transition: box-shadow .2s ease, transform .2s ease;
+	}
+
+	#product-color-dots .owl-dot.active {
+		box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+		transform: scale(1.2);
+	}
+</style>

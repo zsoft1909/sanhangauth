@@ -1,0 +1,25 @@
+columns:
+    company_name:
+        label: 'Tên công ty'
+        type: text
+        sortable: false
+    address:
+        label: 'Địa chỉ'
+        type: text
+        sortable: false
+    phone:
+        label: Phone
+        type: text
+        sortable: false
+    email:
+        label: Email
+        type: text
+        sortable: false
+    fb_admin_id:
+        label: 'Facebook Admin ID'
+        type: text
+        sortable: false
+    fb_app_id:
+        label: 'Facebook App ID'
+        type: text
+        sortable: false

@@ -1,0 +1,16 @@
+<a href="#">{{ activeLocaleName }}<i class="icon-angle-down"></i></a>
+{{ form_ajax('onSwitchLocale', {class: 'top-links-sub-menu multi_language'}) }}
+    <ul class="">
+        {% for code, name in locales %}
+            {% set img = 'assets/images/flags/' ~ k ~ '.png' %}
+            {% if code != activeLocale  %}
+                <li class="top-links-item">
+                    <a href="#" data-locale="{{ code }}">
+                        <img src="/modules/system/assets/ui/vendor/flag-icon/flags/4x3/{{ code }}.svg" alt="{{ code }}"> {{ name }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <input name="locale" class="form-control" type="hidden" />
+{{ form_close() }}

@@ -1,0 +1,33 @@
+
+<div class="col-12 form-group">
+	<label for="shipping-form-message">Fullname:<small>*</small></label>
+	<input type="text" placeholder="Họ và tên" value="{{ user.name ?: cart.customer_name }}" name="customer_name" minlength="3" maxlength="60" required autocomplete="off" class="sm-form-control">
+	<div class="invalid-feedback" data-validate-for="customer_name"></div>
+</div>
+
+<div class="col-12 form-group">
+	<label for="shipping-form-message">Email:</label>
+	<input type="email" placeholder="Địa chỉ email" value="{{ user.email ?: cart.customer_email }}" name="customer_email" autocomplete="off" class="sm-form-control">
+	<div class="invalid-feedback" data-validate-for="customer_email"></div>
+</div>
+
+<div class="col-12 form-group">
+	<label for="shipping-form-message">phone:</label>
+	<input type="telephone" placeholder="Số điện thoại" value="{{ user.phone ?: cart.customer_phone }}" name="customer_phone" minlength="8" autocomplete="off" class="sm-form-control">
+	<div class="invalid-feedback" data-validate-for="customer_phone"></div>
+</div>
+
+<div class="col-12 form-group">
+	<label for="shipping-form-message">Address:</label>
+	<input type="telephone" placeholder="Địa chỉ nhận nhận hàng" value="{{ user.phone ?: cart.customer_address }}" name="customer_address" minlength="8" autocomplete="off" class="sm-form-control">
+	<div class="invalid-feedback" data-validate-for="customer_address"></div>
+</div>
+
+{% if __SELF__.prepareFields('customer') %}
+	<div class="uk-grid lib-grid-15">
+	    {% for field in __SELF__.prepareFields('customer') %}
+	    	{% partial '@custom_fields' field=field group="customer" %}
+	    {% endfor %}
+	</div>
+{% endif %}
+

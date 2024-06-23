@@ -1,0 +1,102 @@
+<div id="reviews" class="clearfix">
+	{% if comments is not empty %}
+		<ol class="commentlist clearfix">
+			{% for k, comment in comments %}
+				<li class="comment even thread-even depth-1" id="li-comment-1">
+					<div id="comment-1" class="comment-wrap clearfix">
+						<div class="comment-meta">
+							<div class="comment-author vcard">
+								<span class="comment-avatar clearfix">
+									<img alt='Image' src="{{ 'assets/images/no_avatar.png'|theme }}"/>
+								</span>
+							</div>
+						</div>
+						<div class="comment-content clearfix">
+							<div class="comment-author">{{ comment.name }}<span>{{ post.published_at|ldate('d M, Y H:i:s') }}</div>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo perferendis aliquid tenetur. Aliquid, tempora, sit aliquam officiis nihil autem eum at repellendus facilis quaerat consequatur commodi laborum saepe non nemo nam maxime quis error tempore possimus est quasi reprehenderit fuga!</p>
+							{% if comment.rating is not empty %}
+								<div class="review-comment-ratings">
+									{% for i in 1..comment.rating %}
+										<i class="icon-star3"></i>
+									{% endfor %}
+									{% for i in 1..(5 - comment.rating)  %}
+										<i class="icon-star-empty"></i>
+									{% endfor %}
+								</div>
+							{% endif %}
+						</div>
+						<div class="clear"></div>
+					</div>
+				</li>
+			{% endfor %}
+		</ol>
+	{% endif %}
+	<!-- Modal Reviews
+	============================================= -->
+	<a href="#" data-toggle="modal" data-target="#reviewFormModal" class="button button-3d m-0 float-right">Add a Review</a>
+
+	<div class="modal fade" id="reviewFormModal" tabindex="-1" role="dialog" aria-labelledby="reviewFormModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="reviewFormModalLabel">Submit a Review</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="row mb-0" id="template-reviewform" name="template-reviewform" action="#" method="post"
+						data-request-validate data-request="onHandleComment" 
+			    		data-request-data="module: 'product', moduleid: {{ id }}" 
+			    		data-request-flash data-request-success="Message.resetFormData()"
+			    		data-request-complete="Message.focusToInvalidFields(data)">
+						<div class="col-6 mb-3">
+							<label for="template-reviewform-name">Name <small>*</small></label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="icon-user"></i></div>
+								</div>
+								<input type="text" id="name" name="name" autocomplete="off" class="form-control required" />
+								<div class="invalid-feedback" data-validate-for="name"></div>
+								<input type="hidden" name="userid" value="0">
+							</div>
+						</div>
+						<div class="col-6 mb-3">
+							<label for="email">Email <small>*</small></label>
+							<div class="input-group">
+								<div class="input-group-prepend"><div class="input-group-text">@</div></div>
+								<input type="email" id="email" name="email" autocomplete="off" class="required email form-control" />
+								<div class="invalid-feedback" data-validate-for="email"></div>
+							</div>
+						</div>
+						<div class="w-100"></div>
+						<div class="col-12 mb-3">
+							<label for="template-reviewform-rating">Rating</label>
+							<select id="rating" name="rating" class="form-control" autocomplete="off">
+								<option value="">-- Select rating --</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
+							<div class="invalid-feedback" data-validate-for="rating"></div>
+						</div>
+						<div class="w-100"></div>
+						<div class="col-12 mb-3">
+							<label for="content">content <small>*</small></label>
+							<textarea class="required form-control" id="content" name="content" rows="6" cols="30"></textarea>
+							<div class="invalid-feedback" data-validate-for="content"></div>
+						</div>
+						<div class="col-12">
+							<button class="button button-3d m-0" type="submit" id="submit" name="submit" value="submit">Submit Review</button>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<!-- Modal Reviews End -->
+
+</div>

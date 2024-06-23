@@ -1,0 +1,92 @@
+{% if no_update == false %}
+<form class="cartFormItem" method="post" style="border-bottom: 1px solid #e5e5e5;" data-request="onUpdateFromCart" data-request-flash>
+{% endif %}
+	<div class="table-responsive">
+        <table class="table cart">
+            <thead>
+                <tr>
+					{% if no_update == false %}
+                    <th class="cart-product-remove">&nbsp;</th>
+                    {% endif %}
+                    <th class="cart-product-thumbnail">&nbsp;</th>
+                    <th class="cart-product-name">Product</th>
+                    <th class="cart-product-price">Unit Price</th>
+                    <th class="cart-product-quantity">Quantity</th>
+                    <th class="cart-product-subtotal">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            	{% for item in cart.items %}
+	                <tr class="cart_item">
+	                	{% if no_update == false %}
+		                    <td class="cart-product-remove">
+		                        <a type="button" class="remove" data-request="onDeleteFromCart" data-request-data="index: {{ loop.index0 }}" data-request-flash><i class="icon-trash2"></i></a>
+		                        <input type="hidden" class="itemIndex" name="index[]" value="{{ loop.index0 }}" autocomplete="off">
+		                    </td>
+	                    {% endif %}
+	                    <td class="cart-product-thumbnail">
+	                        <a href="#">
+	                        	<img src="{{ item.image|media }}" class="shop__cart-item-thumb">
+	                        </a>
+	                    </td>
+	                    <td class="cart-product-name">
+	                        <a href="#">{{ item.title }}</a>
+	                        <p class="mb-0"><small>{{ item.description }}</small></p>
+	                    </td>
+	                    <td class="cart-product-price">
+	                        <span class="amount">{{ item.price|currency({format: 'short'}) }}</span>
+	                    </td>
+	                    <td class="cart-product-quantity">
+	                    	{% if no_update == false %}
+		                        <div class="quantity">
+		                            <input type="button" value="-" class="minus">
+		                            <input type="text" name="quantity[]" value="{{ item.quantity }}" class="qty" data-index="{{ loop.index0 }}" autocomplete="off" />
+		                            <input type="button" value="+" class="plus">
+		                        </div>
+	                        {% else %}
+	                        	<span class="quantity">1x{{ item.quantity }}</span>
+	                        {% endif %}
+	                    </td>
+	                    <td class="cart-product-subtotal">
+	                        <span class="amount">{{ item.total|currency({format: 'short'}) }}</span>
+	                    </td>
+	                </tr>
+	            {% endfor %}
+            </tbody>
+        </table>
+</div>
+{% if no_update == false %}
+</form>
+<div class="cart_bottom mb-4">
+	<div class="row">
+		<div class="col-lg-6 col-6">
+			{% if cart.coupon %}
+                <div class="d-flex">
+                    <div class="code-item">
+                        <div class="box-style-code">
+                            <span>Discount: <b>{{ cart.coupon.code }}</b> <small>[{{ cart.coupon.discount }}]</small></span>
+                            <a href="#" class="shop__cart-delete-item" data-request="onClearCoupon" data-request-flash>x</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if not cart.coupon and not cart.order %}
+                <form data-request="onCheckCoupon" data-request-validate data-request-flash>
+                    <div class="row">
+						<div class="col-lg-8 col-7">
+							<input type="text" name="coupon_code" class="sm-form-control" placeholder="Enter Coupon Code.." autocomplete="off">
+						</div>
+						<div class="col-lg-4 col-5">
+							<button type="submit" class="button button-3d button-black m-0" data-attach-loading>Apply Coupon</button>
+						</div>
+					</div>
+                </form>
+            {% endif %}
+		</div>
+		<div class="col-lg-6 col-6">
+			<a href="#" class="button button-3d m-0 float-right" data-toogle="updateCart">Update Cart</a>
+			<a href="{{ 'checkout'|page }}" class="button button-3d mt-0 float-right">Proceed to Checkout</a>
+		</div>
+	</div>
+</div>
+{% endif %}

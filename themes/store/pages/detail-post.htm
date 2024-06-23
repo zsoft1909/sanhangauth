@@ -1,0 +1,204 @@
+title = "Chi tiết bài viết"
+url = "/:category/:slug"
+layout = "default"
+is_hidden = 0
+
+[newsPost]
+[newsTags]
+slug = "{{ :slug }}"
+categorySlug = "{{ :category }}"
+==
+function onEnd(){
+	$moduleid = $this['post']->id;
+	$this['comments'] = \Zsoft\Base\Models\Comments::where('module', 'blog')->where('moduleid', $moduleid)->where('status', 1)->get();
+}
+==
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+	<div class="container clearfix">
+		<h2>{{ category.name }}</h2>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ url('/') }}">{{ 'Home'|_ }}</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">
+				<a href="{{ 'category-post'|page({slug: category.slug}) }}">{{ category.name }}</a>
+			</li>
+		</ol>
+	</div>
+</section><!-- #page-title end -->
+
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<div class="single-post mb-0">
+				<!-- Entry Image
+				============================================= -->
+				<div class="entry-image bottommargin">
+					<img src="{{ post.image|media }}" alt="{{ post.title }}">
+				</div><!-- .entry-image end -->
+
+				<div class="row gutter-40 col-mb-80">
+					<!-- Post Content
+					============================================= -->
+					<div class="postcontent col-lg-9">
+						<!-- Single Post
+						============================================= -->
+						<div class="entry clearfix">
+							<!-- Entry Title
+							============================================= -->
+							<div class="entry-title">
+								<h1>{{ post.title }}</h1>
+							</div><!-- .entry-title end -->
+							<!-- Entry Meta
+							============================================= -->
+							<div class="entry-meta">
+								<ul>
+									<li><i class="icon-calendar3"></i> {{ post.published_at|ldate('d M, Y') }}</li>
+									{% if userPost is not empty %}
+										<li><i class="icon-user"></i> {{ userPost.first_name }} {{ userPost.last_name }}</li>
+									{% endif %}
+									<li>
+										<i class="icon-folder-open"></i>
+										{% for k, cat in post.categories %}
+											{% if k != 0 %},{% endif %}
+											<a href="{{ 'category-post'|page({slug: cat.slug}) }}">{{ cat.name }}</a>
+										{% endfor %}
+									</li>
+								</ul>
+							</div><!-- .entry-meta end -->
+							<div class="entry-content mt-0">
+								{{ post.content|raw }}
+							</div>
+							<!-- Tag Cloud
+							============================================= -->
+							<div class="tagcloud clearfix bottommargin">
+								{% for k, tag in post.tags %}
+									{% if tag is not empty %}
+										<a href="{{ 'tag-post'|page({tag: tag}) }}">{{ tag }}</a>
+									{% endif %}
+								{% endfor %}
+							</div><!-- .tagcloud end -->
+							<div class="clear"></div>
+
+							<!-- Post Single - Share
+							============================================= -->
+							<div class="si-share border-0 d-flex justify-content-between align-items-center">
+								<span>{{ 'Share this Post'|_ }}:</span>
+								<div>
+									<a href="#" class="social-icon si-borderless si-facebook">
+										<i class="icon-facebook"></i>
+										<i class="icon-facebook"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-twitter">
+										<i class="icon-twitter"></i>
+										<i class="icon-twitter"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-pinterest">
+										<i class="icon-pinterest"></i>
+										<i class="icon-pinterest"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-gplus">
+										<i class="icon-gplus"></i>
+										<i class="icon-gplus"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-rss">
+										<i class="icon-rss"></i>
+										<i class="icon-rss"></i>
+									</a>
+									<a href="#" class="social-icon si-borderless si-email3">
+										<i class="icon-email3"></i>
+										<i class="icon-email3"></i>
+									</a>
+								</div>
+							</div><!-- Post Single - Share End -->
+						</div>
+						<!-- Post Navigation
+						============================================= -->
+						<div class="row justify-content-between col-mb-30 post-navigation">
+							<div class="col-12 col-md-auto text-center">
+								{% if prevPost is not empty %}
+									{% set subCat = prevPost.categories %}
+									<a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: prevPost.slug}) }}">
+										&lArr; {{ prevPost.title }}
+									</a>
+								{% endif %}
+							</div>
+
+							<div class="col-12 col-md-auto text-center">
+								{% if nextPost is not empty %}
+									{% set subCat = nextPost.categories %}
+									<a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: nextPost.slug}) }}">
+										{{ nextPost.title }} &rArr;
+									</a>
+								{% endif %}
+							</div>
+						</div><!-- .post-navigation end -->
+
+						<div class="line"></div>
+
+						{% if userPost is not empty %}
+							<!-- Post Author Info
+							============================================= -->
+							<div class="card">
+								<div class="card-header">
+									<strong>Posted by <a href="#">{{ userPost.first_name }} {{ userPost.last_name }}</a></strong>
+								</div>
+								<div class="card-body">
+									<div class="author-image">
+										<img src="{{ userPost.getAvatarThumb(64) }}" alt="Image" class="rounded-circle">
+									</div>
+									{{ userPost.description }}
+								</div>
+							</div><!-- Post Single - Author End -->
+							<div class="line"></div>
+						{% endif %}
+
+						{% if post_other is not empty %}
+							<h4>Related Posts:</h4>
+							<div class="related-posts row posts-md col-mb-30">
+								{% for k, post in post_other %}
+									{% set subCat = post.categories %}
+									<div class="entry col-12 col-md-6">
+										<div class="grid-inner row align-items-center gutter-20">
+											<div class="col-4">
+												<div class="entry-image">
+													<a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: post.slug}) }}">
+														<img src="{{ post.image|media }}" alt="{{ post.title }}">
+													</a>
+												</div>
+											</div>
+											<div class="col-8">
+												<div class="entry-title title-xs">
+													<h3>
+														<a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: post.slug}) }}">
+															{{ post.title }}
+														</a>
+													</h3>
+												</div>
+												<div class="entry-meta">
+													<ul>
+														<li><i class="icon-calendar3"></i> {{ post.published_at|ldate('d M, Y') }}</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						{% endif %}
+						<!-- Comments
+						============================================= -->
+						{% partial 'comment/blog' type='post' id=post.id %}
+						<!-- #comments end -->
+					</div><!-- .postcontent end -->
+
+					<div class="sidebar col-lg-3">
+						{% partial 'aside/blog' %}
+					</div><!-- .sidebar end -->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

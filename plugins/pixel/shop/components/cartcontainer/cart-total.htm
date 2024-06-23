@@ -1,0 +1,47 @@
+<h4>Cart Totals</h4>
+<div class="table-responsive">
+    <table class="table cart">
+        <tbody>
+            <tr class="cart_item">
+                <td class="cart-product-name">
+                    <strong>Cart Subtotal</strong>
+                </td>
+
+                <td class="cart-product-name">
+                    <span class="amount">{{ cart.total|currency({format: 'short'}) }}</span>
+                </td>
+            </tr>
+            {% if cart.coupon is not empty %}
+	            <tr class="cart_item">
+	                <td class="cart-product-name">
+	                    <strong>Discount</strong>
+	                </td>
+
+	                <td class="cart-product-name">
+	                    <span class="amount">{{ cart.coupon.amount|currency({format: 'short'}) }}</span>
+	                </td>
+	            </tr>
+            {% endif %}
+            {% if cart.shipping_total > 0 %}
+                <tr class="cart_item">
+                    <td class="cart-product-name">
+                        <strong>Shipping</strong>
+                    </td>
+
+                    <td class="cart-product-name">
+                        <span class="amount">{{ cart.shipping_total|currency({format: 'short'}) }}</span>
+                    </td>
+                </tr>
+            {% endif %}
+            <tr class="cart_item">
+                <td class="cart-product-name">
+                    <strong>Total</strong>
+                </td>
+                <td class="cart-product-name">
+                    <span class="amount color lead"><strong>{{ cart.total|currency({format: 'short'}) }}</strong></span>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>

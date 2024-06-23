@@ -1,0 +1,4 @@
+<?php if($value): ?>
+	<?php $province = \EgalHTN\VietnameseAddress\Classes\Province::getContent($value) ?>
+	<p><?php echo isset($province['name_with_type']) ? $province['name_with_type'] : ''; ?></p>
+<?php endif ?>	

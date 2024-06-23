@@ -1,0 +1,4 @@
+<?php if($value): ?>
+	<?php $ward = \EgalHTN\VietnameseAddress\Classes\Ward::getContent($model->districtid, $value); ?>
+	<p><?php echo isset($ward['name_with_type']) ? $ward['name_with_type'] : ''; ?></p>
+<?php endif ?>	
