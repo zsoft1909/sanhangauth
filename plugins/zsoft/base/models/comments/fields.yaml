@@ -11,9 +11,12 @@ fields:
             - preview
         type: dropdown
     moduleid:
-        label: Link
+        label: ID Module
         span: auto
         type: text
+        context:
+            - create
+            - preview
     name:
         label: Name
         span: auto
@@ -37,5 +40,5 @@ fields:
     content:
         label: Content
         size: ''
-        span: auto
+        span: full
         type: textarea

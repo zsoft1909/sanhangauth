@@ -1,13 +1,7 @@
 columns:
-    id:
-        label: id
-        type: number
     module:
         label: module
         type: text
-    userid:
-        label: userid
-        type: number
     name:
         label: name
         type: text
@@ -19,7 +13,8 @@ columns:
         type: text
     status:
         label: status
-        type: text
+        type: partial
+        path: ~/plugins/zsoft/base/models/comments/_status.htm
     created_at:
-        label: created_at
-        type: datetime
+        label: Create
+        type: text
