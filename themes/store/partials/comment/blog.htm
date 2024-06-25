@@ -1,0 +1,63 @@
+<div id="comments" class="clearfix">
+	<h3 id="comments-title"><span>{{ comments.count }}</span> {{ 'Comments'|_ }}</h3>
+	<!-- Comments List
+	============================================= -->
+	{% if comments is not empty %}
+		<ol class="commentlist clearfix">
+			{% for k, comment in comments %}
+				<li class="comment even thread-even depth-1" id="li-comment-1">
+					<div id="comment-1" class="comment-wrap clearfix">
+						<div class="comment-meta">
+							<div class="comment-author vcard">
+								<span class="comment-avatar clearfix">
+									<img alt='Image' src="{{ 'assets/images/no_avatar.png'|theme }}" class='avatar avatar-60 photo avatar-default'/>
+								</span>
+							</div>
+						</div>
+						<div class="comment-content clearfix">
+							<div class="comment-author">{{ comment.name }}<span>{{ post.published_at|ldate('d M, Y H:i:s') }}</span></div>
+							<p>{{ comment.content }}</p>
+							<!-- <a class='comment-reply-link' href='#'><i class="icon-reply"></i></a> -->
+						</div>
+						<div class="clear"></div>
+					</div>
+				</li>
+			{% endfor %}
+		</ol><!-- .commentlist end -->
+	{% endif %}
+	<div class="clear"></div>
+
+	<!-- Comment Form
+	============================================= -->
+	<div id="respond">
+		<h3>{{ 'Leave a'|_ }} <span>{{ 'Comment'|_ }}</span></h3>
+		<form class="row" method="post" id="commentform" data-request-validate data-request="onHandleComment" 
+    		data-request-data="module: 'blog', moduleid: {{ id }}" data-request-flash data-request-success="Message.resetFormData()"
+    		data-request-complete="Message.focusToInvalidFields(data)">
+			<div class="col-md-4 form-group">
+				<label for="author">{{ 'Name'|_ }}</label>
+				<input type="text" name="name" id="author" value="" size="22" tabindex="1" class="sm-form-control"  autocomplete="off" />
+				<div class="invalid-feedback" data-validate-for="name"></div>
+				<input type="hidden" name="userid" value="0">
+			</div>
+			<div class="col-md-4 form-group">
+				<label for="email">Email</label>
+				<input type="text" name="email" id="email" value="" size="22" tabindex="2" class="sm-form-control"  autocomplete="off" />
+				<div class="invalid-feedback" data-validate-for="email"></div>
+			</div>
+			<div class="col-md-4 form-group">
+				<label for="website">{{ 'Website'|_ }}</label>
+				<input type="text" name="website" id="website" value="" size="22" tabindex="3" class="sm-form-control"  autocomplete="off" />
+			</div>
+			<div class="w-100"></div>
+			<div class="col-12 form-group">
+				<label for="comment">{{ 'Comment'|_ }}</label>
+				<textarea name="content" cols="58" rows="7" tabindex="4" class="sm-form-control"></textarea>
+				<div class="invalid-feedback" data-validate-for="content"></div>
+			</div>
+			<div class="col-12 form-group">
+				<button name="submit" type="submit" id="submit-button" tabindex="5" value="Submit" class="button button-3d m-0">{{ 'Submit Comment'|_ }}</button>
+			</div>
+		</form>
+	</div><!-- #respond end -->
+</div>

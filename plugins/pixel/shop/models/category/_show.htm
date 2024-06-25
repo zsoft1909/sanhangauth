@@ -1,0 +1,13 @@
+<?php
+
+$text = [
+    1 => 'Có',
+    0 => 'Không'
+];
+
+$class = [
+    0 => 'text-danger',
+    1 => 'text-info'
+];
+
+echo '<span class="oc-icon-circle '.$class[$record->show_in_menu].'">'.$text[$record->show_in_menu].'</span>';

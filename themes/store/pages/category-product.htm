@@ -1,0 +1,263 @@
+title = "Danh mục sản phẩm"
+url = "/pc/:slug"
+layout = "default"
+is_hidden = 0
+
+[shopProductsList]
+categoryFilter = "{{ :slug }}"
+scope = "showItems"
+limitType = "paginate"
+take = 20
+orderBy = "views_count"
+sort = "asc"
+productPage = 404
+categoryPage = 404
+showCategoriesFilter = 1
+showSearchBar = 1
+showQuickAdd = 1
+typeCategoriesFilter = "dropdown"
+==
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+	<div class="container clearfix">
+		<h1>{{ activeCategory.name }}</h1>
+		<span>{{ activeCategory.description }}</span>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ url('/') }}">{{ 'Home'|_ }}</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">{{ activeCategory.name }}</li>
+		</ol>
+	</div>
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<div class="row gutter-40 col-mb-80">
+				<!-- Post Content
+				============================================= -->
+				<div class="postcontent col-lg-9 order-lg-last">
+					<!-- Shop
+					============================================= -->
+					{% if products is not empty %}
+						<div id="shop" class="shop row grid-container gutter-20" data-layout="fitRows">
+							{% for k, product in products %}
+								<div class="product col-md-4 col-sm-6 col-12">
+									<div class="grid-inner">
+										<div class="product-image">
+											<a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
+		                                        <img src="{{ product.image_default|media }}" alt="{{ product.name }}">
+		                                    </a>
+		                                    {% if product.is_on_sale %}
+		                                    	<div class="sale-flash badge badge-success p-2 text-uppercase">Sale!</div>
+		                                    {% endif %}
+		                                    {% if product.is_out_of_stock %}
+												<div class="sale-flash badge badge-secondary p-2">Out of Stock</div>
+		                                    {% endif %}
+											<div class="bg-overlay">
+												<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
+													{% if product.is_with_variants == 0 %}
+														<a href="#" class="btn btn-dark mr-2 ajax-addtocart" 
+														data-request-data="id: {{ product.id }}, quantity: 1, price: {{ product.price }}" 
+														data-attach-loading="" data-request-form data-request="onAddToCart" 
+														data-request-flash data-request-success="CartButton.onSuccess(data)"><i class="icon-shopping-cart"></i></a>
+													{% else %}
+														<a href="{{ 'detail-product'|page({slug: product.slug}) }}?display=popup" class="btn btn-dark" data-lightbox="ajax"><i class="icon-shopping-cart"></i></a>
+													{% endif %}
+													<a href="{{ 'detail-product'|page({slug: product.slug}) }}?display=popup" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
+												</div>
+												<div class="bg-overlay-bg bg-transparent"></div>
+											</div>
+										</div>
+										<div class="product-desc">
+											<div class="product-title">
+												<h3><a href="{{ 'detail-product'|page({slug: product.slug}) }}">{{ product.name }}</a></h3>
+											</div>
+											<div class="product-price">
+												{% if product.is_on_sale %}
+													<del>{{ product.getOldPrice()|currency({format: 'short'}) }}</del> 
+													<ins>{{ product.price|currency({format: 'short'}) }}</ins>
+												{% else %}
+													{{ product.price|currency({format: 'short'}) }}
+												{% endif %}
+											</div>
+											<div class="product-rating">{{ product.getRatingIcon()|raw }}</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div><!-- #shop end -->
+						<!-- Pagination
+						============================================= -->
+						{% if products.hasPages %}
+						    <ul class="pagination mt-5 pagination-circle justify-content-center">
+						        <li class="page-item {{ products.currentPage > 1 ?: 'disabled' }}">
+						           <a class="page-link" href="{{ products.previousPageUrl }}" rel="prev"><i class="icon-angle-left"></i></a>
+						        </li>
+						        {% for page in range(1, products.lastPage) %}
+						            <li  class="page-item {{ products.currentPage == page ? 'active' }}">
+						                <a class="page-link" href="{{ products.url(page) }}">{{ page }}</a>
+						            </li>
+						        {% endfor %}
+						        <li class="page-item {{ products.hasMorePages ?: 'disabled' }}">
+						            <a class="page-link" href="{{ products.nextPageUrl }}" rel="next"><i class="icon-angle-right"></i></a>
+						        </li>
+						    </ul>
+						{% endif %}
+						<!-- .pager end -->
+					{% endif %}
+				</div><!-- .postcontent end -->
+
+				<!-- Sidebar
+				============================================= -->
+				<div class="sidebar col-lg-3">
+					<div class="sidebar-widgets-wrap">
+						{% if categoryAll is not empty %}
+							<div class="widget widget_links clearfix">
+								<h4>{{ 'Shop Categories'|_ }}</h4>
+								<ul>
+									{% for k, cat in categoryAll %}
+										<li><a href="{{ 'category-product'|page({slug: cat.slug}) }}">{{ cat.name }}</a></li>
+									{% endfor %}
+								</ul>
+							</div>
+						{% endif %}
+
+						{% if productsRecent is not empty %}
+							<div class="widget clearfix">
+								<h4>{{ 'Recent Items'|_ }}</h4>
+								<div class="posts-sm row col-mb-30" id="recent-shop-list-sidebar">
+									{% for k, product in productsRecent %}
+										<div class="entry col-12">
+											<div class="grid-inner row no-gutters">
+												<div class="col-auto">
+													<div class="entry-image">
+														<a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
+									                    	<img src="{{ product.image_default|media }}" alt="{{ product.name }}">
+									                    </a>
+													</div>
+												</div>
+												<div class="col pl-3">
+													<div class="entry-title">
+														<h4><a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">{{ product.name }}</a></h4>
+													</div>
+													<div class="entry-meta no-separator">
+														<ul>
+															<li class="color">{{ product.price|currency({format: 'short'}) }}</li>
+															<li><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star-half-full"></i></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+
+							</div>
+						{% endif %}
+						{% if productsViews is not empty %}
+							<div class="widget clearfix">
+								<h4>Last Viewed Items</h4>
+								<div class="posts-sm row col-mb-30" id="last-viewed-shop-list-sidebar">
+									{% for k, product in productsRecent %}
+										<div class="entry col-12">
+											<div class="grid-inner row no-gutters">
+												<div class="col-auto">
+													<div class="entry-image">
+														<a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
+									                    	<img src="{{ product.image_default|media }}" alt="{{ product.name }}">
+									                    </a>
+													</div>
+												</div>
+												<div class="col pl-3">
+													<div class="entry-title">
+														<h4><a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">{{ product.name }}</a></h4>
+													</div>
+													<div class="entry-meta no-separator">
+														<ul>
+															<li class="color">{{ product.price|currency({format: 'short'}) }}</li>
+															<li><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star-half-full"></i></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+
+						{% if productsPopular is not empty %}
+							<div class="widget clearfix">
+								<h4>Popular Items</h4>
+								<div class="posts-sm row col-mb-30" id="last-viewed-shop-list-sidebar">
+									{% for k, product in productsPopular %}
+										<div class="entry col-12">
+											<div class="grid-inner row no-gutters">
+												<div class="col-auto">
+													<div class="entry-image">
+														<a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
+									                    	<img src="{{ product.image_default|media }}" alt="{{ product.name }}">
+									                    </a>
+													</div>
+												</div>
+												<div class="col pl-3">
+													<div class="entry-title">
+														<h4><a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">{{ product.name }}</a></h4>
+													</div>
+													<div class="entry-meta no-separator">
+														<ul>
+															<li class="color">{{ product.price|currency({format: 'short'}) }}</li>
+															<li><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star-half-full"></i></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+
+						<div class="widget clearfix">
+							<iframe src="//www.facebook.com/plugins/likebox.php?href={{ setting.facebook }}&amp;width=240&amp;height=290&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=false&amp;show_border=true&amp;appId=499481203443583" style="border:none; overflow:hidden; width:100% !important;"></iframe>
+						</div>
+
+						<div class="widget clearfix">
+							<h4>Subscribe For Latest Offers</h4>
+							<p><strong>Subscribe</strong> to Our Newsletter to get Important News, Amazing Offers &amp; Inside Scoops:</p>
+							<form action="#" class="my-0" ata-request-validate data-request="onHandleContact" data-request-data="type: '2'" 
+                                    data-request-flash data-request-success="Message.resetFormData()">
+								<div class="input-group mx-auto">
+									<input type="text" class="form-control" placeholder="Enter your Email" required="" name="email">
+									<div class="input-group-append">
+										<button class="btn btn-success" type="submit"><i class="icon-email2"></i></button>
+									</div>
+								</div>
+							</form>
+						</div>
+
+						{% if brands is not empty %}
+							<div class="widget clearfix">
+								<div id="oc-clients-full" class="owl-carousel image-carousel carousel-widget" data-items="1" data-margin="10" data-loop="true" data-nav="false" data-autoplay="5000" data-pagi="false">
+									{% for k, brand in brands %}
+										<div class="oc-item">
+											<a href="{{ 'brand'|page({slug: brand.slug}) }}">
+												<img src="{{ brand.image|media }}" alt="{{ brand.name }}">
+											</a>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+
+					</div>
+				</div><!-- .sidebar end -->
+			</div>
+		</div>
+	</div>
+</section><!-- #content end -->

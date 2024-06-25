@@ -1,0 +1,55 @@
+<div class="text-danger mt-5" data-validate-for="gateway"></div>
+<ul class="uk-list uk-list-payment">
+  	{% for method in methods_list %}
+		<li class="mb20">
+			<div class="method-item">
+				<input type="radio" value="{{ method.gateway }}" name="gateway" data-msg-required="Hình thức vận chuyển"
+                    {% if method.gateway == cart.gateway or methods_list|length == 1 %}
+                    checked="checked"
+                    {% endif %}
+                    id="method-{{ method.gateway }}" required>
+				<label for="method-{{ method.gateway }}" class="uk-flex uk-flex-middle">
+                    <div class="icon-cart">
+                        <img src="{{ 'resources/images/icon-cod.png'|theme }}">
+                    </div>
+                    <div>
+                    	<div>COD</div>
+                    	<div>{{ method.title }}</div>
+                    </div>
+                </label>
+			</div>
+		</li><div class="list-partial">
+			{{ method.partial|raw }}
+		</div>
+    </li>
+		{% else %}
+			{% for
+			  card in cards %}
+			  <li
+				  id="item-class pixel_card"
+				  class="list-group-item {% if not card.status == 'active' %}disabled{% endif %}"
+				  onclick="hiddenDataHolder()"
+			  >
+				  <div class="list-radio">
+				  <input type="radio" value="{{ card.reference }}" name="gateway" {% if not
+				  card.status == 'active' %} disabled="disabled" {% endif %} id="card-{{
+				  card.token }}" >
+				  <label for="card-{{ card.reference }}">
+					  <div class="info">
+					  <strong> {{card.reference}}</strong>
+					  <p>Type {{ card.type }} </p>
+					  </div>
+					  <div class="card" style="border: none">
+					  <img
+						  src="{{ '/plugins/pixel/shop/assets/img/icon-'|app }}{{ card.network }}.svg"
+						  alt=""
+						  width="64"
+						  height="64"
+					  />
+					  </div>
+				  </label>
+				  </div>
+			  </li>
+			{% endfor %}
+  {% endfor %}
+</ul>

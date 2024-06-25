@@ -1,0 +1,117 @@
+==
+<?php
+use Responsiv\Currency\Models\Currency;
+use RainLab\Translate\Models\Locale;
+function onStart(){
+    //$this['currency'] = Currency::where('is_enabled', 1)->where('is_primary', 0)->get();
+    //$this['currencyAvtive'] = Currency::getPrimary();
+}
+?>
+==
+<!-- Top Bar
+============================================= -->
+<div id="top-bar">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-12 col-md-auto">
+                <p class="mb-0 py-2 text-center text-md-left">
+                    <strong>Call:</strong> {{ setting.phone }} | <strong>Email:</strong> {{ setting.email }}
+                </p>
+            </div>
+            <div class="col-12 col-md-auto">
+                <!-- Top Links
+                ============================================= -->
+                <div class="top-links on-click">
+                    <ul class="top-links-container">
+                        <li class="top-links-item d-none"><a href="#">{{ currencyAvtive.currency_code }}</a>
+                            <ul class="top-links-sub-menu">
+                                {% for k, val in currency %}
+                                    <li class="top-links-item"><a href="#">{{ val.currency_code }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="top-links-item">
+                            {% component 'localePicker' %}
+                        </li>
+                        <li class="top-links-item"><a href="#">Login</a>
+                            <div class="top-links-section">
+                                <form id="top-login" autocomplete="off" data-request="onSignin"
+                                    data-request-success="Message.resetFormData()"
+                                    data-request-complete="Message.focusToInvalidFields(data)">
+                                    <div class="form-group">
+                                        <label>{{ 'Username'|_ }}</label>
+                                        <input type="text" name="username" class="form-control" placeholder="Email address">
+                                        <div class="invalid-feedback" data-validate-for="username"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{{ 'Password'|_ }}</label>
+                                        <input type="password" name="password" class="form-control" placeholder="Password" required="">
+                                        <div class="invalid-feedback" data-validate-for="password"></div>
+                                    </div>
+                                    <div class="form-group form-check">
+                                        <input class="form-check-input" type="checkbox" value="always" id="remember_login" name="remember_login">
+                                        <label class="form-check-label" for="remember_login">{{ 'Remember Me'|_ }}</label>
+                                    </div>
+                                    <button class="btn btn-danger btn-block" type="submit">{{ 'Sign in'|_ }}</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div><!-- .top-links end -->
+
+            </div>
+        </div>
+    </div>
+</div><!-- #top-bar end -->
+
+<!-- Header
+============================================= -->
+<header id="header" class="header-size-sm">
+    <div class="container">
+        <div class="header-row flex-column flex-lg-row justify-content-center justify-content-lg-start">
+            <!-- Logo
+            ============================================= -->
+            <div id="logo" class="mr-0 mr-lg-auto">
+                <a href="{{ url('/') }}" data-dark-logo="{{ setting.logo|media }}">
+                    <img src="{{ setting.logo|media }}" alt="{{ setting.company_name }}">
+                </a>
+            </div><!-- #logo end -->
+            {% if setting.extras is not empty %}
+                <div class="header-misc mb-4 mb-lg-0 order-lg-last">
+                    <ul class="header-extras mr-0 mr-lg-4">
+                        {% for k, val in setting.extras %}
+                            <li>
+                                {{ val.icon|raw }}
+                                <div class="he-text">
+                                    {{ val.title }}
+                                    <span>{{ val.description }}</span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="header-wrap" class="border-top border-f5">
+        <div class="container">
+            <div class="header-row justify-content-between">
+                <div class="header-misc">
+                    <!-- Top Cart
+                    ============================================= -->
+                    {% component 'cartButton' %}
+                    <!-- #top-cart end -->
+                </div>
+                <div id="primary-menu-trigger">
+                    <svg class="svg-trigger" viewBox="0 0 100 100"><path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20"></path><path d="m 30,50 h 40"></path><path d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20"></path></svg>
+                </div>
+                <!-- Primary Navigation
+                ============================================= -->
+                {% partial 'site/navigations' menus=primaryMenu %}
+                <!-- #primary-menu end -->
+            </div>
+        </div>
+    </div>
+    <div class="header-wrap-clone"></div>
+</header><!-- #header end -->

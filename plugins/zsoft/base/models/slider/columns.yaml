@@ -1,0 +1,30 @@
+columns:
+    sort_order:
+        label: Thứ tự
+        invisible: true
+    image:
+        label: Ảnh
+        type: partial
+        path: ~/plugins/zsoft/base/models/slider/_image.htm
+        width: 80px
+        sortable: false
+    name:
+        label: 'Tên slider ảnh'
+        type: text
+        width: 150px
+        sortable: false
+    target:
+        label: 'Đường dẫn điều hướng'
+        type: text
+        sortable: false
+    publish:
+        label: 'Trạng Thái'
+        type: partial
+        path: ~/plugins/zsoft/base/models/slider/_status.htm
+        width: 150px
+        sortable: false
+    created_at:
+        label: 'Ngày tạo'
+        type: text
+        width: 150px
+        sortable: false

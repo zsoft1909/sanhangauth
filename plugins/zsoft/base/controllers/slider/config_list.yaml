@@ -1,0 +1,12 @@
+list: $/zsoft/base/models/slider/columns.yaml
+modelClass: Zsoft\Base\Models\Slider
+title: Slider
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+recordsPerPage: 20
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'zsoft/base/slider/update/:id'

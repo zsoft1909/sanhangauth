@@ -1,0 +1,53 @@
+<section id="payment_info">
+    <header class="panel_head">
+        <h6 class="heading">Thông tin thanh toán</h6>
+    </header>
+    <section class="panel_body">
+        <div class="apply_coupon uk-hidden">
+            {% if cart.coupon %}
+                <div class="uk-flex lib-grid-10 mt5">
+                    <div class="code-item">
+                        <div class="box-style-code relative">
+                            <span>Giảm {{ cart.coupon.discount }}</span>
+                            <a href="#" class="shop__cart-delete-item uk-position-absolute"
+                                data-request="onClearCoupon" data-request-flash>x</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if not cart.coupon and not cart.order %}
+                <form class="card" data-request="onCheckCoupon" data-request-validate data-request-flash>
+                    <div class="input-coupon relative uk-flex mb10">
+                        <input type="text" class="coupon-text" name="coupon_code" placeholder="Mã giảm giá">
+                        <button type="submit" class="coupon-apply" data-attach-loading>Áp dụng</button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+        <div class="cart-bottom">
+            <div class="uk-flex uk-flex-space-between mb15">
+                <span>Tổng tiền hàng</span>
+                <span>{{ cart.subtotal|currency({format: 'short'}) }}</span>
+            </div>
+            {% if cart.coupon %}
+                <div class="uk-flex uk-flex-space-between mb15">
+                    <span>Giảm giá</span>
+                    <span>-{{ cart.coupon.discount }}</span>
+                </div>
+            {% endif %}
+            <div class="uk-flex uk-flex-space-between mb15">
+                <span>Phí vận chuyển</span>
+                <span>{{ cart.shipping_total|currency({format: 'short'}) }}</span>
+            </div>
+            <div class="uk-flex uk-flex-space-between mb15 uk-hidden">
+                <span>Thuế</span>
+                <span>{{ cart.tax_total|currency({format: 'short'}) }}</span>
+            </div>
+            <hr>
+            <div class="uk-flex uk-flex-space-between mb15">
+                <span>Tổng thanh toán</span>
+                <span><font>{{ cart.total|currency({format: 'short'}) }}</font></span>
+            </div>
+        </div>
+    </section>
+</section>

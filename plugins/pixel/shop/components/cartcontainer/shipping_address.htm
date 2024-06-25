@@ -1,0 +1,13 @@
+{% if __SELF__.prepareFields('shipping') %}
+    <div class="row mb-0" >
+	    {% for field in __SELF__.prepareFields('shipping') %}
+	    	{% partial '@custom_fields' field=field group="shipping" %}
+	    {% endfor %}
+    </div>
+{% endif %}
+<div class="row mb-0">
+	<div class="col-12 form-group">
+		<label for="shipping-form-message">Notes <small>*</small></label>
+		<textarea id="shipping-form-message" name="notes" maxlength="300" rows="6" cols="30" class="sm-form-control">{{ cart.notes }}</textarea>
+	</div>
+</div>

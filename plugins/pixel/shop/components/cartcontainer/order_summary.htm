@@ -1,0 +1,263 @@
+<div class="row justify-content-md-center">
+    <div class="shop__order-summary col-md-6">
+        {% if input('thanks') or thanks %}
+            <div class="shop__order-thanks">
+                {% if validationFailed %}
+                    <i class="fas fa-exclamation-circle fa-3x pull-left text-danger"></i>
+                    <h3 class="heading">{{ 'pixel.shop::component.order.not_confirmed'|trans }}</h3>
+                    <p>{{ 'pixel.shop::component.order.not_confirmed_comment'|trans }}</p>
+                {% else %}
+                    <i class="fas fa-check-circle fa-3x pull-left text-success"></i>
+                    <h3 class="heading">Đặt hàng thành công</h3>
+                    <p>Một email đã được gửi đến địa chỉ mail của bạn {{ order.customer_email }}</p>
+                {% endif %}
+            </div>
+            <hr>
+        {% endif %}
+
+        <div class="order-header text-center d-none">
+            <h2>{{ 'pixel.shop::component.cart.order_summary'|trans }}</h2>
+            <span class="badge badge-status status-{{ order.status }}">
+                <b>{{ ('pixel.shop::lang.status.' ~ order.status)|trans }}</b>
+            </span>
+        </div>
+
+        <div class="row d-none">
+            <div class="col-md-6">
+                <div class="seller-info text-left">
+                    <label>{{ 'pixel.shop::component.order.from'|trans }}</label>
+                    <p>
+                        <strong>{{ order.getShopName() }}</strong> <br>
+                        <small class="text-primary">{{ order.getShopEmail() }}</small> <br>
+                        {{ order.getShopAddress()|nl2br }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="customer-info text-right">
+                    <label>{{ 'pixel.shop::component.order.to'|trans }}</label>
+                    <p>
+                        <strong>{{ order.customer_name }}</strong> <br>
+                        <small class="text-primary">{{ order.customer_email }}</small> <br>
+                        {{ order.billing_address.first_line }} <br>
+
+                        {% if order.billing_address.city %}
+                        {{ order.billing_address.city }},
+                        {% endif %}
+
+                        {% if order.billing_address.state %}
+                        {{ order.billing_address.state }},
+                        {% endif %}
+
+                        {% if order.billing_address.country %}
+                        {{ order.billing_address.country }}
+                        {% endif %}
+                        <br>
+
+                        {% if order.billing_address.zip %}
+                        {{ 'pixel.shop::lang.fields.postal_code'|trans }}: {{ order.billing_address.zip }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="uk-text-left">
+                    <label>ID đơn hàng</label>
+                    <p><b>#{{ order.getOrderID() }}</b></p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="uk-text-right">
+                    <label>Phương thức thanh toán</label>
+                    <p>
+                        <img style="margin: -6px 6px; display: inline-block;"
+                            src="{{ url('/plugins/pixel/shop/assets/img/icon-' ~ order.gateway ~ '.svg') }}" alt=""
+                            width="32" height="32">
+                        <b>Thanh toán Khi nhận hàng</b>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {% if order.custom_fields.customer %}
+            <div class="row">
+                {% for field in order.custom_fields.customer %}
+                    {% if field.value %}
+                        <div class="col-md-3">
+                            <div class="text-left">
+                                <label>{{ field.label }}</label>
+                                <p>{{ field.value }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="order-items">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th width="500">
+                                <span>Sản phẩm</span>
+                            </th>
+                            <th width="100" class="text-right">
+                                <span>Giá</span>
+                            </th>
+                            <th width="100" class="text-center">
+                                <span>Số lượng</span>
+                            </th>
+                            <th width="100" class="text-right">
+                                <span>Thành tiền</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items %}
+                        <tr>
+                            <td style="vertical-align: top">
+                                <strong><u>{{ item.title }}</u></strong>
+                                {% if item.description %}
+                                    <br>
+                                    <small>{{ item.description }}</small>
+                                {% endif %}
+                            </td>
+                            <td class="text-right">
+                                {{ item.price|currency({format: 'short'}) }}
+                            </td>
+                            <td class="text-center">
+                                x{{ item.quantity }}
+                            </td>
+                            <td class="text-right">
+                                {{ item.total|currency({format: 'short'}) }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        {% if order.coupon %}
+                            <tr>
+                                <td>
+                                    {{ 'pixel.shop::lang.fields.coupon'|trans }} <br>
+                                    <small class="text-success"><b>{{ order.coupon.code }}</b></small>
+                                </td>
+                                <td class="text-right">
+                                    - -
+                                </td>
+                                <td class="text-center">
+                                    - -
+                                </td>
+                                <td class="text-right">
+                                    <span class="text-success">-{{ order.coupon.getValueLabel() }}</span>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td colspan="3" class="border-top text-right">
+                                <span>Phí vận chuyển</span>
+                            </td>
+                            <td class="text-right border-top">
+                                {{ order.shipping_total|currency({format: 'short'}) }}
+                            </td>
+                        </tr>
+                        <tr class="uk-hidden">
+                            <td colspan="3" class="border-top text-right">
+                                <span>Thuế</span>
+                            </td>
+                            <td class="text-right border-top">
+                                {{ order.tax_total|currency({format: 'short'}) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="border-top text-right">
+                                <span>Tổng tiền</span>
+                            </td>
+                            <td class="text-right border-top">
+                                <span class="h3 uk-text-bold">
+                                    {{ order.total|currency({format: 'short'}) }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% if order.custom_fields.shipping %}
+        <div class="row">
+            {% for field in order.custom_fields.shipping %}
+                {% if field.value %}
+                    <div class="col-md-3">
+                        <div class="text-left">
+                            <label>{{ field.label }}</label>
+                            <p>{{ field.value }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if order.custom_fields.billing %}
+        <div class="row">
+            {% for field in order.custom_fields.billing %}
+                {% if field.value %}
+                    <div class="col-md-3">
+                        <div class="text-left">
+                            <label>{{ field.label }}</label>
+                            <p>{{ field.value }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="item-shipping">
+            <label><b>Họ và tên</b></label>
+            <p>{{ order.customer_name }}</p>
+        </div>
+        <div class="item-shipping">
+            <label><b>Số điện thoại</b></label>
+            <p>{{ order.customer_phone }}</p>
+        </div>
+        <div class="item-shipping">
+            <label><b>Email</b></label>
+            <p>{{ order.customer_email }}</p>
+        </div>
+        <div class="item-shipping">
+            <label><b>Địa chỉ nhận hàng</b></label>
+            <p>{{ order.customer_address }}</p>
+        </div>
+
+        {% if order.note %}
+            <div class="order-notes">
+                <label><b>Ghi chú</b></label>
+                <p>{{ order.note }}</p>
+            </div>
+        {% endif %}
+
+        {% if order.gateway == 'bank_transfer' %}
+            <label>{{ 'pixel.shop::component.cart.payment_method_notes'|trans|upper }}</label>
+            {% partial '@method_bank_transfer' cart=order %}
+        {% endif %}
+
+<!--         {% if order.gateway == 'cash_on_delivery' %}
+            <label>{{ 'Phương thức thanh toán'|trans|upper }}</label>
+            {% partial '@method_cash_on_delivery' %}
+        {% endif %} -->
+    </div>
+
+</div>
+<style type="text/css" media="s">
+    .shop__order-summary{
+        border-radius: 16px;
+        background: var(--color-white);
+        padding: 20px 24px;
+        border: 1px solid #eee;
+    }
+</style>

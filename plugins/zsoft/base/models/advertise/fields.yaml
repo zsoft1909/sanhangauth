@@ -1,0 +1,27 @@
+fields:
+    position:
+        label: 'Vị trí băng quản cáo'
+        span: auto
+        options:
+            1: 'Trang chủ (Cạnh Slider)'
+            2: 'Đối tác, thương hiệu'
+        type: dropdown
+    name:
+        label: 'Tên băng quản cáo'
+        span: auto
+        type: text
+    target:
+        label: 'Link điều hướng'
+        size: ''
+        span: full
+        type: textarea
+    status:
+        label: 'Trạng thái hiển thị'
+        span: auto
+        default: 1
+        type: switch
+    image:
+        label: 'Ảnh quảng cáo'
+        mode: image
+        span: full
+        type: mediafinder

@@ -1,0 +1,27 @@
+fields:
+    name:
+        label: 'Tên menu'
+        span: auto
+        type: text
+    target:
+        label: 'Link điều hướng menu'
+        span: auto
+        type: text
+    parent_id:
+        label: 'Menu cha'
+        span: auto
+        type: dropdown
+        options: listParentMenuItem
+    position:
+        label: 'Vị trí'
+        options:
+            1: 'Menu chính'
+            2: 'Menu chân trang'
+        showSearch: true
+        span: auto
+        type: dropdown
+    status:
+        label: Status
+        span: full
+        type: switch
+        default: 1

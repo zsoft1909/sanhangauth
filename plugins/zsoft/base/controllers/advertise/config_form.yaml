@@ -1,0 +1,10 @@
+name: Advertise
+form: $/zsoft/base/models/advertise/fields.yaml
+modelClass: Zsoft\Base\Models\Advertise
+defaultRedirect: zsoft/base/advertise
+create:
+    redirect: 'zsoft/base/advertise/update/:id'
+    redirectClose: zsoft/base/advertise
+update:
+    redirect: zsoft/base/advertise
+    redirectClose: zsoft/base/advertise

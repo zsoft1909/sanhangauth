@@ -1,0 +1,10 @@
+name: Comments
+form: $/zsoft/base/models/comments/fields.yaml
+modelClass: Zsoft\Base\Models\Comments
+defaultRedirect: zsoft/base/comments
+create:
+    redirect: 'zsoft/base/comments/update/:id'
+    redirectClose: zsoft/base/comments
+update:
+    redirect: zsoft/base/comments
+    redirectClose: zsoft/base/comments
