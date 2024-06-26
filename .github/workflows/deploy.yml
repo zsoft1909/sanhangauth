@@ -115,9 +115,9 @@ jobs:
           envs: AWS_ECR_REGISTRY, AWS_ECR_REPOSITORY, IMAGE_TAG, CONTAINER_NAME, IP_HOST
           script: |
             aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
-            docker pull $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
+            docker pull $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}
             docker rm $CONTAINER_NAME -f > /dev/null 2>&1
-            docker run -d --network zsoft-dev --ip $IP_HOST -v sanhangauth:/var/www/html/storage --restart always --name $CONTAINER_NAME $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
+            docker run -d --network zsoft-docker-network --ip $IP_HOST -v sanhangauth:/var/www/html/storage --restart always --name $CONTAINER_NAME $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}
             docker image prune --all
       - uses: FranzDiebold/github-env-vars-action@v2
         if: ${{ always() }}
