@@ -314,22 +314,22 @@ return [
     'storage' => [
 
         'uploads' => [
-            'disk'            => 'local',
-            'folder'          => 'uploads',
-            'path'            => '/storage/app/uploads',
+            'disk'            => env('DEFAULT_FILE_SYSTEM', 'local'),
+            'folder'          => env('DEFAULT_FILE_SYSTEM') == 's3' ? 'app/uploads' : 'uploads',
+            'path'            => env('STORAGE_PATH', '/storage') . '/app/uploads',
             'temporaryUrlTTL' => 3600,
         ],
 
         'media' => [
-            'disk'   => 'local',
-            'folder' => 'media',
-            'path'   => '/storage/app/media',
+            'disk'   => env('DEFAULT_FILE_SYSTEM', 'local'),
+            'folder' => env('DEFAULT_FILE_SYSTEM') == 's3' ? 'app/media' : 'media',
+            'path'   => env('STORAGE_PATH', '/storage') . '/app/media',
         ],
 
         'resized' => [
-            'disk'   => 'local',
-            'folder' => 'resized',
-            'path'   => '/storage/app/resized',
+            'disk'   => env('DEFAULT_FILE_SYSTEM', 'local'),
+            'folder' => env('DEFAULT_FILE_SYSTEM') == 's3' ? 'app/resized' : 'resized',
+            'path'   => env('STORAGE_PATH', '/storage') . '/app/resized',
         ],
 
     ],

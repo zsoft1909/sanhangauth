@@ -52,11 +52,6 @@ tabs:
             span: right
             label: backend::lang.user.password_confirmation
 
-        description:
-            span: full
-            type: textarea
-            label: backend::lang.user.group.description_field
-
         role:
             context: [create, update]
             label: backend::lang.user.role_field
