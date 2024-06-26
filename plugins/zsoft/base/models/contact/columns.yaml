@@ -1,0 +1,25 @@
+columns:
+    type:
+        label: Loại liên hệ
+        type: partial
+        path: '$/zsoft/base/models/contact/_type.htm'
+    type:
+        label: Loại liên hệ
+        type: partial
+        path: '$/zsoft/base/models/contact/_type.htm'
+    fullname:
+        label: fullname
+        type: text
+        sortable: false
+    phone:
+        label: Số điện thoai
+        type: text
+        sortable: false
+    status:
+        label: Trạng thái
+        type: partial
+        path: '$/zsoft/base/models/contact/_status.htm'
+        sortable: false
+    created_at:
+        label: Ngày gửi
+        type: text

@@ -1,0 +1,122 @@
+title = "Danh mục bài viết"
+url = "/c/:slug"
+layout = "default"
+is_hidden = 0
+
+[newsPosts]
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+postFeatured = 0
+categoryFilter = "{{ :slug }}"
+nestedCategoryPosts = 1
+postPage = 404
+categoryPage = 404
+
+[newsTags]
+slug = "{{ :slug }}"
+noTagsMessage = "No tags found"
+==
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+	<div class="container clearfix">
+		<h1>{{ category.name }}</h1>
+		<span>{{ category.content }}</span>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ url('/') }}">{{ 'Home'|_ }}</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
+		</ol>
+	</div>
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<div class="row gutter-40 col-mb-80">
+				<!-- Post Content
+				============================================= -->
+				<div class="postcontent col-lg-9">
+					<!-- Posts
+					============================================= -->
+					{% if posts is not empty %}
+						<div id="posts" class="row gutter-40">
+							{% for k, post in posts %}
+								<div class="entry col-12">
+									<div class="grid-inner row no-gutters">
+										<div class="entry-image col-md-4">
+											<a href="{{ 'detail-post'|page({category: category.slug, slug: post.slug}) }}">
+												<img src="{{ post.image|media }}" alt="{{ post.title }}">
+											</a>
+										</div>
+										<div class="col-md-8 pl-md-4">
+											<div class="entry-title title-sm">
+												<h2>
+													<a href="{{ 'detail-post'|page({category: category.slug, slug: post.slug}) }}">
+													{{ post.title }}</a>
+												</h2>
+											</div>
+											<div class="entry-meta">
+												<ul>
+													<li><i class="icon-calendar3"></i> {{ post.published_at|ldate('d M, Y') }}</li>
+													<li><i class="icon-user"></i> {{ post.user.first_name }} {{ post.user.last_name }}</li>
+													<li>
+														<i class="icon-folder-open"></i>
+														{% for k, cat in post.categories %}
+															{% if k != 0 %},{% endif %}
+															<a href="{{ 'category-post'|page({slug: cat.slug}) }}">{{ cat.name }}</a>
+														{% endfor %}
+													</li>
+													<li>
+														<a href="{{ 'detail-post'|page({category: category.slug, slug: val.slug}) }}">
+															<i class="icon-camera-retro"></i>
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="entry-content">
+												<p>{{ html_limit(html_strip(post.introductory), 250) }}</p>
+												<a href="{{ 'detail-post'|page({category: category.slug, slug: val.slug}) }}" class="more-link">{{ 'Read More'|_ }}</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div><!-- #posts end -->
+					{% endif %}
+					<!-- Pagination
+					============================================= -->
+					{% if posts.hasPages %}
+					    <ul class="pagination mt-5 pagination-circle justify-content-center">
+					        <li class="page-item {{ posts.currentPage > 1 ?: 'disabled' }}">
+					           <a class="page-link" href="{{ posts.previousPageUrl }}" rel="prev"><i class="icon-angle-left"></i></a>
+					        </li>
+					        {% for page in range(1, posts.lastPage) %}
+					            <li  class="page-item {{ posts.currentPage == page ? 'active' }}">
+					                <a class="page-link" href="{{ posts.url(page) }}">{{ page }}</a>
+					            </li>
+					        {% endfor %}
+					        <li class="page-item {{ posts.hasMorePages ?: 'disabled' }}">
+					            <a class="page-link" href="{{ posts.nextPageUrl }}" rel="next"><i class="icon-angle-right"></i></a>
+					        </li>
+					    </ul>
+					{% endif %}
+					<!-- .pager end -->
+
+				</div><!-- .postcontent end -->
+
+				<!-- Sidebar
+				============================================= -->
+				<div class="sidebar col-lg-3">
+					{% partial 'aside/blog' %}
+				</div><!-- .sidebar end -->
+			</div>
+
+		</div>
+	</div>
+</section><!-- #content end -->

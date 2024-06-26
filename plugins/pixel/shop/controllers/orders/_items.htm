@@ -1,0 +1,100 @@
+<table class="table table-hover table-content order-items">
+	<thead>
+		<tr>
+            <th width="36"></th>
+			<th><?= trans('pixel.shop::lang.fields.description') ?></th>
+			<th width="100" class="text-right"><?= trans('pixel.shop::lang.fields.price') ?></th>
+			<th width="60" class="text-center"><?= trans('pixel.shop::lang.fields.qty') ?></th>
+			<th width="100" class="text-right"><?= trans('pixel.shop::lang.fields.total') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($value as $item): ?>
+		<tr>
+            <td valign="middle" style="vertical-align: middle">
+                <img src="/storage/app/media<?= $item['image'] ?>" alt="" width="60" height="60" style="border-radius: 3px;object-fit: cover;">
+            </td>
+			<td valign="middle" style="vertical-align: top">
+				<b><?= $item['title'] ?></b>
+				<?php if(!empty($item['description'])): ?>
+				<br><?= $item['description'] ?>
+				<?php endif; ?>
+				<?php foreach ($item['extraData'] as $stt => $data): ?>
+					<div class="extra-item">
+						<p><?= ($stt + 1) . '. ' .$data['name'] ?><br><small><?= $data['options'] ?></small></p>
+					</div>
+				<?php endforeach ?>
+			</td>
+			<td class="text-right">
+				<?= Currency::format($item['price']) ?>
+			</td>
+			<td class="text-center">
+				<?= $item['quantity'] ?>
+			</td>
+			<!-- <td class="text-right">
+				0.00
+			</td> -->
+			<td class="text-right">
+				<b><?= Currency::format($item['total']) ?></b>
+			</td>
+		</tr>
+		<?php endforeach ?>
+
+		<?php if($formModel->coupon): ?>
+		<tr>
+			<td colspan="2">
+				<b><?= trans('pixel.shop::lang.fields.coupon') ?></b>
+				<br>
+				<b class="text-success"><?= $formModel->coupon->code ?></b>
+			</td>
+			<td class="text-right">
+				- -
+			</td>
+			<td class="text-center">
+				- -
+			</td>
+			<!-- <td class="text-right">
+				0.00
+			</td> -->
+			<td class="text-right">
+				<b class="text-success">-<?= $formModel->coupon->getValueLabel() ?></b>
+			</td>
+		</tr>
+		<?php endif; ?>
+
+		<?php if($formModel->shipping_total > 0): ?>
+		<tr>
+			<td class="text-right" colspan="4">
+				<b><?= trans('pixel.shop::lang.fields.shipping') ?></b>
+			</td>
+			<td class="text-right">
+				<b><?= Currency::format($formModel->shipping_total) ?></b>
+			</td>
+		</tr>
+		<?php endif; ?>
+		<tr>
+			<td class="text-right" colspan="4">
+				<b><?= trans('pixel.shop::lang.fields.tax') ?></b>
+			</td>
+			<td class="text-right">
+				<b><?= Currency::format($formModel->tax_total) ?></b>
+			</td>
+		</tr>
+		<tr>
+			<td class="text-right" colspan="4">
+				<b><?= trans('pixel.shop::lang.fields.grand_total') ?></b>
+			</td>
+			<td class="text-right">
+				<b><?= $formModel->getFormatedTotal() ?></b>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<style type="text/css">
+	.extra-item {
+	  	padding-left: 20px;
+	}
+	.extra-item p {
+  		margin-bottom: 0;
+	}
+</style>

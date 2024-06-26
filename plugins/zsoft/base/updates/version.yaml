@@ -1,0 +1,20 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table zsoft_base_setting'
+    - builder_table_create_zsoft_base_setting.php
+1.0.3:
+    - 'Created table zsoft_base_contact'
+    - builder_table_create_zsoft_base_contact.php
+1.0.4:
+    - 'Created table zsoft_base_navigations'
+    - builder_table_create_zsoft_base_navigations.php
+1.0.5:
+    - 'Created table zsoft_base_slider'
+    - builder_table_create_zsoft_base_slider.php
+1.0.6:
+    - 'Created table zsoft_base_advertise'
+    - builder_table_create_zsoft_base_advertise.php
+1.0.7:
+    - 'Created table zsoft_base_comments'
+    - builder_table_create_zsoft_base_comments.php

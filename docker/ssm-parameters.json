@@ -1,0 +1,149 @@
+[
+    {
+        "Name": "/web-tuvi/staging/APP_DEBUG",
+        "Value": "true",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/APP_URL",
+        "Value": "https://demo.tuvicaivan.vn",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/APP_KEY",
+        "Value": "AtfT0Jg6HEkUTuKS3TV0nKJxq0s8KN8M",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/DB_CONNECTION",
+        "Value": "mysql",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/DB_HOST",
+        "Value": "zsoft-common-prod-db-writer.zsoft.internal",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/DB_DATABASE",
+        "Value": "tuvicaivan_test",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/DB_USERNAME",
+        "Value": "tuvicaivan_test",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/DB_PASSWORD",
+        "Value": "HZCP5zmJA3[XCjxc",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/REDIS_HOST",
+        "Value": "localhost",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/REDIS_PASSWORD",
+        "Value": "null",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/DB_USE_CONFIG_FOR_TESTING",
+        "Value": "false",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/CACHE_DRIVER",
+        "Value": "file",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/SESSION_DRIVER",
+        "Value": "file",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/QUEUE_CONNECTION",
+        "Value": "sync",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/MAIL_DRIVER",
+        "Value": "smtp",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/MAIL_HOST",
+        "Value": "localhost",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/MAIL_PORT",
+        "Value": "587",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/MAIL_ENCRYPTION",
+        "Value": "tls",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/MAIL_USERNAME",
+        "Value": "test",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/MAIL_PASSWORD",
+        "Value": "test",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/ROUTES_CACHE",
+        "Value": "false",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/ASSET_CACHE",
+        "Value": "false",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/DATABASE_TEMPLATES",
+        "Value": "false",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/LINK_POLICY",
+        "Value": "force",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/ENABLE_CSRF",
+        "Value": "true",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/AWS_ACCESS_KEY_ID",
+        "Value": "null",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/AWS_SECRET_ACCESS_KEY",
+        "Value": "null",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/AWS_DEFAULT_REGION",
+        "Value": "ap-southeast-1",
+        "Type": "String"
+    },
+    {
+        "Name": "/web-tuvi/staging/AWS_BUCKET",
+        "Value": "null",
+        "Type": "String"
+    }
+    
+
+]

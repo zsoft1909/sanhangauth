@@ -1,0 +1,163 @@
+<div class="single-product shop-quick-view-ajax">
+    <div class="ajax-modal-title">
+        <h2>{{ product.name }}</h2>
+    </div>
+    <div class="product modal-padding">
+        <div class="row gutter-40 col-mb-50">
+            <div class="col-md-6">
+                <div class="product-image">
+                    {% if product.gallery.count > 0 %}
+                        <div class="fslider" data-pagi="false">
+                            <div class="flexslider">
+                                <div class="slider-wrap">
+                                    {% for image in product.gallery %}
+                                        <div class="slide">
+                                            <a href="{{ image.getPath() }}" title="{{ product.name }}">
+                                                <img src="{{ image.getPath() }}" alt="{{ product.name }}">
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if product.is_on_sale %}
+                            <div class="sale-flash badge badge-danger p-2">Sale!</div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6 product-desc">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="product-price box_detail_product" data-currency="{{ product.getDefaultCurrencySymbol() }}">
+                        {% if product.is_on_sale %}
+                            <del>{{ product.getOldPrice()|currency({format: 'short'}) }}</del> 
+                        {% endif %}
+                        <ins>{{ product.price|currency({format: 'short'}) }}</ins>
+                    </div>
+                    <div class="product-rating">{{ product.getRatingIcon()|raw }}</div>
+                </div>
+                <div class="clear"></div>
+                <div class="line"></div>
+
+                <!-- Product Single - Quantity & Cart Button
+                ============================================= -->
+                <form action="" method="post" accept-charset="utf-8">
+                    <input type="hidden" name="base_price" value="{{ product.price }}" autocomplete="off">
+                    <input type="hidden" name="old_price" value="{{ product.getOldPrice(false) }}" autocomplete="off">
+                    <input type="hidden" name="base_price_with_tax" value="{{ product.price }}" autocomplete="off">
+                    <input type="hidden" name="old_price_with_tax" value="{{ product.getOldPrice() }}" autocomplete="off">
+                    <div class="cart mb-0" method="post" enctype='multipart/form-data'>
+                        <div class="quantity">
+                            <input type="button" value="-" class="minus">
+                            <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty" />
+                            <input type="button" value="+" class="plus">
+                        </div>
+                        <button type="submit" class="add-to-cart button m-0 ajax-addtocart"
+                            data-attach-loading="" data-request-form data-request="onAddToCart" 
+                            data-request-flash data-request-success="CartButton.onSuccess(data)">Add to cart</button>
+                    </div>
+                    <input type="hidden" name="id" value="{{ product.id }}">
+                    <input type="hidden" name="price" value="{{ product.price }}">
+                    <input type="hidden" name="options" value="">
+                    <input type="hidden" name="options_index" value="">
+                    <input type="hidden" name="" value="">
+                    {% if product.is_with_variants %}
+                        <div class="row align-items-center mt-4">
+                            {% for variant in product.variants %}
+                                <div class="col-sm-6 product-variant">
+                                    <h5 class="font-weight-medium mb-3">
+                                        Select {{ variant.variant }}:
+                                        {% if variant.variant == 'Color'  %}
+                                            <span class="product-color-value ml-1 font-weight-semibold"></span>
+                                        {% endif %}
+                                    </h5>
+                                    <div class="btn-group-toggle">
+                                        {% for option in variant.items %}
+                                            <div class="btn btn-sm btn-outline-secondary font-weight-normal ls0 nott item-type variant-option" data-price="{{ product.getPriceOption(option.price) }}" 
+                                                data-tax={{ product.getTaxOption(option.price) }} data-quantity="{{ option.quantity }}" 
+                                                data-value="{{ option.ref }}">
+                                                <span>{{ option.val }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <input type="hidden" name="option[{{ product.slugOption(variant.variant) }}]" 
+                                    class="form-control shop__product-input" data-label="{{ variant.variant }}" 
+                                    data-slug="{{ variant.id }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </form><!-- Product Single - Quantity & Cart Button End -->
+
+                <div class="clear"></div>
+                <div class="line"></div>
+                <!-- Product Single - Short Description
+                ============================================= -->
+                <div class="product-short">{{ product.short_description|raw }}</div>
+                <div class="card product-meta mb-0">
+                    <div class="card-body">
+                        <span itemprop="productID" class="sku_wrapper">SKU: <span class="sku">{{ product.code }}</span></span>
+                        <span class="posted_in">Category: 
+                            <a href="{{ 'category-product'|page({slug: category.slug}) }}" rel="tag">{{ category.name }}</a>
+                        </span>
+                        {% if product.tags is not empty %}
+                            <span class="tagged_as">Tags: 
+                                {% for k, tag in product.tags %}
+                                    {% if tag is not empty %}
+                                        {{ k != 0 ? ',' : ''}}
+                                        <a href="{{ 'tag-product'|page({tag: tag}) }}" rel="tag">{{ tag }}</a>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/plugins/pixel/shop/assets/js/product.js"> </script>
+<script type="text/javascript" charset="utf-8" async defer>
+jQuery(document).ready(function($) {
+    $(document).on('click', '.plus', function(){
+        let element = $(this).parents('.quantity').find('.qty'),
+            elValue = element.val(),
+            elStep = element.attr('step') || 1,
+            elMax = element.attr('max'),
+            intRegex = /^\d+$/;
+
+        if( elMax && ( Number(elValue) >= Number( elMax ) ) ) { return false; }
+
+        if( intRegex.test( elValue ) ) {
+            let elValuePlus = Number(elValue) + Number(elStep);
+            element.val( elValuePlus ).change();
+        } else {
+            element.val( Number(elStep) ).change();
+        }
+
+        return false;
+    });
+
+    // $(".minus").off( 'click' ).on( 'click', function(){
+    $(document).on('click', '.minus', function(){
+        let element = $(this).parents('.quantity').find('.qty'),
+            elValue = element.val(),
+            elStep = element.attr('step') || 1,
+            elMin = element.attr('min'),
+            intRegex = /^\d+$/;
+
+        if( !elMin || elMin < 0 ) { elMin = 1; }
+
+        if( intRegex.test( elValue ) ) {
+            if( Number(elValue) > Number( elMin ) ) {
+                let elValueMinus = Number(elValue) - Number(elStep);
+                element.val( elValueMinus ).change();
+            }
+        } else {
+            element.val( Number(elStep) ).change();
+        }
+
+        return false;
+    });
+});
+</script>

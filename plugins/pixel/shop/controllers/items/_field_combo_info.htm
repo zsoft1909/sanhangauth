@@ -1,0 +1,215 @@
+<?php
+	$product_now = $product_other = '';
+	if(isset($formModel->combo['items']) && is_array($formModel->combo['items']) && count($formModel->combo['items'])){
+		foreach ($formModel->combo['items'] as $k => $item){
+			$html = '<div class="d-flex">
+		        <div class="thumb">
+		            <span><img src="'.$item['image'].'" alt=""></span>
+		        </div>
+		        <div class="info">
+		            <h3 class="title">'.$item['name'].'</h3>
+		            <div class="desc"></div>
+		            <div class="price-sale" data-price="'.$item['price'].'">
+		                Giá giảm: <span>'.number_format($item['price'], 0, ',', '.').'đ</span>
+		            </div>
+		            <div class="price-old" data-price="'.$item['old_price'].'">
+	                    Giá chưa giảm: <span>'.number_format($item['old_price'], 0, ',', '.').'đ</span>
+	                </div>
+                    <div class="cta-delete" data-product="2">
+		                <button class="btn btn-danger btn-sm oc-icon-delete" data-delete-product="">Bỏ sản phẩm ra khỏi combo</button>
+		                <div class="item">'.json_encode($item).'</div>
+		            </div>
+		        </div>
+		    </div>';
+			if ($item['id'] == $formModel->id){
+				$product_now .= $html;
+			}else{
+				$product_other .= $html;
+			}
+		}
+	}
+?>
+
+<div class="layout">
+	<div class="layout-cell">
+		<?php if (isset($formModel->variants) && is_array($formModel->variants) && count($formModel->variants)): ?>
+			<div class="form-group span-full">
+				<button class="btn btn-primary btn-sm oc-icon-plus" data-control="popup" 
+					data-handler="onShowVariantCombo" data-extra-data="itemid: <?= $formModel->id ?>, eleRespone: '#product-variants'">
+					Chọn biến thể sản phẩm vào combo
+				</button>
+			</div>
+			<div id="product-variants"><?php echo $product_now ?></div>
+			<div class="clearfix"></div>
+			<div class="form-group select-field span-left">
+				<label><strong>Thêm sản phẩm mới vào Combo</strong></label>
+				<select class="form-control custom-select select-product-add-combo " data-handler="onGetOptions" 
+					data-request-data="itemid: <?= $formModel->id ?>" data-minimum-input-length="5" data-ajax--delay="300">
+					<option value="">Tìm kiếm sản phẩm</option>
+				</select>
+			</div>
+			<div class="clearfix"></div>
+			<div id="product-variants-other"><?php echo $product_other ?></div>
+		<?php endif ?>
+	</div>
+	<div class="layout-cell w-300">
+		<div class="form-group text-field span-full">
+			<label><strong>Tên combo</strong><br><small>(Tên hiển thị trên thông tin giỏ hàng)</small></label>
+			<input class="form-control combo_name" type="text" value="<?php echo !isset($formModel->combo['name']) ? '' : $formModel->combo['name'] ?>" autocomplete="off">
+		</div>
+		<div class="form-group text-field span-full">
+			<label><strong>Giá tổng</strong><br><small>(Giá tổng tất cả sản phẩm trong combo)</small></label>
+			<input class="form-control combo_price-old" type="text" value="<?php echo !isset($formModel->combo['old_price']) ? '' : $formModel->combo['old_price'] ?>" autocomplete="off" readonly>
+		</div>
+		<div class="form-group text-field span-full">
+			<label><strong>Giá khuyến mại</strong></label>
+			<input class="form-control combo_price" type="text" value="<?php echo !isset($formModel->combo['price']) ? '' : $formModel->combo['price'] ?>" autocomplete="off">
+		</div>
+		<input name="Item[combo]" class="form-control combo-field" type="hidden" autocomplete="off"/>
+		<input class="form-control combo_id" type="hidden" autocomplete="off" value="<?php echo $formModel->id ?>" />
+	</div>
+</div>
+<style>
+	.d-flex {
+		width: 100%;
+		float: left;
+		margin-bottom: 20px;
+	}
+	.d-flex .thumb {
+		width: 150px;
+		height: 150px;
+		float: left;
+	}
+	.d-flex .thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.d-flex .info {
+		float: left;
+		width: calc(100% - 150px);
+		padding-left: 10px;
+	}
+	.d-flex .info .title {
+	  	margin-top: 0;
+	  	font-size: 16px;
+	  	font-weight: 600;
+	}
+	.type-text {
+	  	font-weight: 600;
+	  	margin-bottom: 10px;
+	}
+	.price-sale span{color: red;}
+	.price-old span{text-decoration: line-through;}
+	.cta-delete, .cta-delete .item {display: none;}
+	#product-variants-other .cta-delete,
+	#product-variants .cta-delete {
+		display: block; 
+		margin-top:10px
+	}
+</style>
+<script>
+	jQuery(document).ready(function($) {
+		$(document).on('click', '[data-add-variant]', function(event) {
+
+			var formatter = new Intl.NumberFormat('vi-VN');
+		    event.preventDefault();
+		    var prd_el = $('.control-popup .d-flex'),
+		    	variants = $('.control-popup .form-group.switch-field'),
+		    	eleRespone = $(this).data('respone');
+
+		    let flag = true,
+		    	text = '',
+		    	variant = '',
+		    	price = 0,
+		    	priceOld = 0,
+		    	option = JSON.parse( prd_el.find('div.item').text() ) || null;
+
+		    if (variants.length) {
+			    variants.each(function(index, el) {
+			    	var radio = $(this).find('input[type="radio"]:checked');
+			    	if (radio.val()) {
+			    		option.price = parseInt(option.price) + ( parseInt(radio.data('price')) || 0); 
+			    		option.old_price = parseInt(option.old_price) + ( parseInt(radio.data('price')) || 0); 
+
+			    		text += radio.parents('.form-group').find('.type-text').text() + ': ' + radio.next().text() + ', ';
+				    	variant += 'variant::' + radio.val() + ',';
+				    }else{
+				    	flag = false;
+				    	$.oc.flashMsg({text: 'Biến thể sản phẩm bắt buộc phải chọn', 'class': 'error'});
+				    }
+			    });
+
+			    option.options_index = variant.slice(0, -1);
+		    	option.options = text.slice(0, -2);
+			}
+
+			if (flag) {
+		    	$(eleRespone).append('<div class="d-flex">' + prd_el.html() + '</div>');
+		    	setTimeout(function(){
+		    		var element = $(eleRespone + ' .d-flex:last-child');
+		    		if(option.options != ''){
+		    			element.find('.info .desc').append('<p>' + option.options + '</p>');
+		    		}
+
+	    			element.find('.info div.item').text(JSON.stringify(option));
+		    		element.find('.price-sale').attr('data-price', option.price);
+		    		element.find('.price-old').attr('data-price', option.old_price);
+
+		    		element.find('.price-sale span').text(formatter.format(option.price) + 'đ');
+		    		element.find('.price-old span').text(formatter.format(option.old_price) + 'đ');
+		    		$('.modal').trigger('close.oc.popup');
+		    		refeshCombo();
+		    	}, 2000);
+		    }
+		});
+
+		$(document).on('change', '.select-product-add-combo', function(event) {
+			$.popup({
+				handler: 'onShowVariantCombo',
+				extraData: { 
+					itemid: $(this).val(),
+					eleRespone: '#product-variants-other'
+				} 
+			});
+		});
+
+		$(document).on('change', '.combo_price, .combo_name', function(event) {
+			refeshCombo();
+		})
+
+		$(document).on('click', '#product-variants-other .cta-delete', function(event) {
+			$(this).parents('.d-flex').remove();
+			refeshCombo();
+			return false
+		});
+
+		$(document).on('click', '#product-variants .cta-delete', function(event) {
+			$('[data-field-name="combo"] .d-flex').remove();
+			refeshCombo();
+			return false
+		});
+
+		function refeshCombo(){
+			var formatter = new Intl.NumberFormat('vi-VN');
+			var combo = {
+				'id': $('.combo_id').val(),
+				'name': $('.combo_name').val() || null,
+				'price': $('.combo_price').val() || 0,
+				'old_price': 0,
+				'items': []
+			};
+			$('[data-field-name="combo"] .d-flex').each(function(index, el) {
+				var option = JSON.parse( $(this).find('div.item').text() ) || null;
+				if(option.price)
+					combo.old_price += parseInt(option.price);
+
+				combo.items.push(option)
+			});
+
+			$('.combo_price-old').val(formatter.format(combo.old_price));
+			combo = JSON.stringify(combo);
+			$('.combo-field').val(combo);
+		}
+	});
+</script>

@@ -1,0 +1,66 @@
+<tr class="item-option" data-option-pending>
+	<td>
+		<input type="hidden" class="input-option-ref" value="<?= @$option['ref'] ?? str_random(12) ?>">
+		<input type="text" name="<?= $name ?>" value="<?= @$option['val'] ?>" maxlength="30" class="form-control input-sm input-option-value" placeholder="<?= trans('pixel.shop::lang.messages.option_placeholder') ?>">
+	</td>
+	<td class="" width="100">
+		<input
+			type="color"
+			maxlength="9"
+			value="<?= @$option['code'] ?>"
+			class="form-control input-sm text-right input-option-code input-option-change"
+			placeholder="#fff;">
+	</td>
+	<td class="" width="300">
+		<!-- <input type="text" maxlength="15" value="<?= @$option['code'] ?>" class="form-control input-sm input-option-code" placeholder="- - - -"> -->
+		<div id="MediaFinder-formImageDefault-<?= @$option['ref'] ?? str_random(12) ?>" 
+			class="field-mediafinder style-image-single is-image <?php echo !empty(@$option['image']) ? 'is-populated' : '' ?>"
+		    data-control="mediafinder" data-thumbnail-width="0" data-thumbnail-height="0">
+		    <!-- Find Button -->
+		    <a href="javascript:;" class="find-button">
+		        <span class="find-button-icon oc-icon-image"></span>
+		    </a>
+			<!-- Existing value -->
+		    <div class="find-object">
+		        <div class="icon-container">
+		            <img data-find-image src="/storage/app/media<?= @$option['image'] ?>" />
+		        </div>
+		        <div class="info">
+		            <h4 class="filename">
+		                <span data-find-file-name><?= @$option['image'] ?></span>
+		                <a href="javascript:;" class="find-remove-button">
+		                    <i class="icon-times"></i>
+		                </a>
+		            </h4>
+		        </div>
+		    </div>
+		    <!-- Data locker -->
+		    <input type="hidden" id="Form-field-Item-<?= @$option['ref'] ?? str_random(12) ?>" value="<?= @$option['image'] ?>" 
+		    class="form-control input-sm text-right input-option-image input-option-change" data-find-value/>
+		</div>
+	</td>
+	<td class="">
+		<input
+			type="text"
+			maxlength="9"
+			value="<?= @$option['quantity'] ?>"
+			class="form-control input-sm text-right input-option-quantity"
+			placeholder="&infin;">
+	</td>
+	<td class="">
+		<input
+			type="text"
+			<?= (@$option['price']) ? 'data-price="'.@$option['price'].'"' : '' ?>
+			value="<?= @$option['price'] ?>"
+			class="form-control input-sm text-right input-option-price-diff"
+			placeholder="0.00">
+	</td>
+	<td>
+		<i class="icon-bars handle"></i>
+	</td>
+	<td>
+		<button id="delete-option" class="input-option-delete btn" data-option-delete>
+			<i class="icon-times"></i>
+        </button>
+	</td>
+</tr>

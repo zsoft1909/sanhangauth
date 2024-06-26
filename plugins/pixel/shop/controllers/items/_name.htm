@@ -1,0 +1,8 @@
+<div style="display: block; margin: -8px auto">
+	<?php 
+		$strLimit = 42; 
+		$brand = $record->brand ? $record->brand->name : '- - - - -';
+	?>
+
+	<?= strlen($value) > $strLimit ? substr($value,0,$strLimit)."..." : $value ?>
+</div>

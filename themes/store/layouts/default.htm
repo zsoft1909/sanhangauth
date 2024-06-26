@@ -1,0 +1,156 @@
+description = "Default layout"
+
+[setting]
+
+[cartButton]
+cartPage = "cart"
+colorBG = "#C43730"
+color = "#FFFFFF"
+position = "bottom-right"
+
+[account]
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+
+[localePicker]
+[contact]
+[comment]
+forceUrl = 0
+==
+<?php
+function onStart(){
+        $this['version'] = '1.3';
+        $this['totalOrder'] = 1019 + \Pixel\Shop\Models\Order::count();
+        $this['totalUser'] = 421 + \RainLab\User\Models\User::count();
+        $this['custom_styles'] = \Backend\Models\EditorSetting::renderCss();
+        $this->addJs('/plugins/pixel/shop/assets/js/button.js');
+    }
+?>
+==
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="robots" content="index, follow"/>
+        <meta name="author" content="Zsoft">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="generator" content="Zsoft">
+        <link rel="canonical" href="{{ this.page.canonical ? this.page.canonical : url_current() }}"/>
+
+        <!-- for Google -->
+        <title>{{ this.page.meta_title ? this.page.meta_title : setting.title_seo }}</title>
+        <meta name="title" content="{{ this.page.meta_title ? this.page.meta_title : setting.title_seo }}">
+        <meta name="description" content="{{ this.page.meta_description ? this.page.meta_description : setting.description_seo }}">
+        <meta name="keywords" content="{{ this.page.meta_keywords ? this.page.meta_keywords : setting.keyword_seo }}">
+
+        <!-- for Facebook -->
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="{{ this.page.meta_title ? this.page.meta_title : setting.title_seo }}"/>
+        <meta property="og:description" content="{{ this.page.meta_description ? this.page.meta_description : setting.description_seo }}"/>
+        <meta property="og:site_name" content="Zsoft"/>
+        <meta property="og:image" content="{{ (this.page.meta_image ? this.page.meta_image : setting.image_share) | media}}"/>
+        <meta property="og:url" content="{{ this.page.canonical ? this.page.canonical : url_current() }}"/>
+        <meta property="og:locale" content="vi_VN">
+
+        <!-- for Facebook App -->
+        <meta property="fb:admins" content="{{ setting.fb_admin }}"/>
+        <meta property="fb:app_id" content="{{ setting.fb_app }}" />
+
+        {% if setting.favicon is not empty %}
+        <link rel="icon" type="image/png" href="{{ setting.favicon |media }}">
+        {% else %}
+        <link rel="icon" type="image/png" href="{{ 'assets/images/favicon.png' |theme }}">
+        {% endif %}
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap" rel="stylesheet" type="text/css" />
+
+        <link type="text/css" href="{{ 'assets/css/bootstrap.css'|theme }}" rel="stylesheet" />
+        <link type="text/css" href="{{ 'assets/style.css'|theme }}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ 'assets/css/dark.css'|theme }}" type="text/css" />
+        <link rel="stylesheet" href="{{ 'assets/css/font-icons.css'|theme }}" type="text/css" />
+        <link rel="stylesheet" href="{{ 'assets/css/animate.css'|theme }}" type="text/css" />
+        <link rel="stylesheet" href="{{ 'assets/css/magnific-popup.css'|theme }}" type="text/css" />
+
+        <link rel="stylesheet" href="{{ 'assets/css/custom.css'|theme }}" type="text/css" />
+        {% styles %}
+        <style>{{ html_strip(custom_styles) }}</style>
+        {{ setting.script_head | raw }}
+    </head>
+    <body class="stretched">
+        {{ setting.script_body | raw }}
+
+        <div id="wrapper" class="clearfix">
+            <!-- Header -->
+            <div id="layout-header">
+                {% partial 'site/header' ~ is_page %}
+            </div>
+
+            <!-- Content -->
+            <section id="layout-content">
+                {% page %}
+            </section>
+
+            <!-- Footer -->
+            <footer id="layout-footer">
+                {% partial 'site/footer' %}
+            </footer>
+        </div>
+        <!-- Go To Top
+        ============================================= -->
+        <div id="gotoTop" class="icon-angle-up"></div>
+
+        <!-- JavaScripts
+        ============================================= -->
+        <script src="{{ 'assets/js/jquery.js'|theme }}"></script>
+        <script src="{{ 'assets/js/plugins.js'|theme }}"></script>
+
+        <!-- Footer Scripts
+        ============================================= -->
+        <script src="{{ 'assets/js/functions.js'|theme }}?v={{ version }}"></script>
+        <script>
+            $(window).on( 'pluginCarouselReady', function(){
+                let colorValue  = $('.product-color-value'),
+                    productDots = $('#product-color-dots'),
+                    currentOwl = $( '.owl-dot.active' ).attr( "data-value" );
+
+                colorValue.text( currentOwl );
+                let owl = $('#oc-shop').owlCarousel({
+                    items: 1,
+                    dotsContainer: '#product-color-dots'
+                });
+
+                productDots.find('button').each( function(){
+                    let dot     = $(this),
+                        color   = dot.attr('data-color');
+
+                    dot.css({ 'background-color': color });
+                });
+
+                owl.on('changed.owl.carousel', function(event) {
+                    currentOwl = $( '.owl-dot.active' ).attr( "data-value" );
+                    colorValue.text( currentOwl );
+                });
+
+            });
+
+            jQuery(document).ready(function ($) {
+                $('.multi_language a').on('click', function () {
+                    var locale = $(this).data('locale'),
+                        form = $(this).parents('form');
+
+                    form.find('[name="locale"]').val(locale).change()
+                    form.trigger('submit');
+
+                    return false;
+                });
+            });
+        </script>
+        {% framework extras %}
+        {% scripts %}
+
+    </body>
+</html>

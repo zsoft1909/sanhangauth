@@ -1,0 +1,10 @@
+name: Setting
+form: $/zsoft/base/models/setting/fields.yaml
+modelClass: Zsoft\Base\Models\Setting
+defaultRedirect: zsoft/base/setting
+create:
+    redirect: 'zsoft/base/setting/update/:id'
+    redirectClose: zsoft/base/setting
+update:
+    redirect: zsoft/base/setting
+    redirectClose: zsoft/base/setting

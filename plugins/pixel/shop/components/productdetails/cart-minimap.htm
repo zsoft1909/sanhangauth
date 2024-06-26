@@ -1,0 +1,23 @@
+{% if cart.items is not empty %}
+    <div class="top-cart-title">
+        <h4>Shopping Cart</h4>
+    </div>
+    <div class="top-cart-items" >
+    	{% for item in cart.items %}
+    		<div class="top-cart-item">
+                <div class="top-cart-item-image">
+                    <a href="#">
+                    	<img src="{{ item.image|media }}" class="shop__cart-item-thumb">
+                    </a>
+                </div>
+                <div class="top-cart-item-desc">
+                    <div class="top-cart-item-desc-title">
+                        <a href="#">{{ item.title }}</a>
+                        <span class="top-cart-item-price d-block">{{ item.total|currency({format: 'short'})  }}</span>
+                    </div>
+                    <div class="top-cart-item-quantity">x {{ item.quantity }}</div>
+                </div>
+            </div>
+    	{% endfor %}
+    </div>
+{% endif %}

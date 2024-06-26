@@ -1,0 +1,28 @@
+{% if products is not empty %}
+	{% for k, product in products %}
+		<div class="entry col-12">
+	        <div class="grid-inner row no-gutters">
+	            <div class="col-auto">
+	                <div class="entry-image">
+	                    <a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
+	                    	<img src="{{ product.image_default|media }}" alt="{{ product.name }}">
+	                    </a>
+	                </div>
+	            </div>
+	            <div class="col pl-3">
+	                <div class="entry-title">
+	                    <h4>
+	                    	<a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">{{ product.name }}</a>
+	                    </h4>
+	                </div>
+	                <div class="entry-meta no-separator">
+	                    <ul>
+	                        <li class="color">{{ product.price|currency({format: 'short'}) }}</li>
+	                        <li>{{ product.getRatingIcon()|raw }}</li>
+	                    </ul>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	{% endfor %}
+{% endif %}

@@ -1,0 +1,12 @@
+list: $/zsoft/base/models/setting/columns.yaml
+modelClass: Zsoft\Base\Models\Setting
+title: Setting
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: false
+showCheckboxes: false
+recordsPerPage: 1
+# toolbar:
+    # buttons: list_toolbar
+    # search:
+        # prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'zsoft/base/setting/update/:id'

@@ -1,0 +1,10 @@
+name: Slider
+form: $/zsoft/base/models/slider/fields.yaml
+modelClass: Zsoft\Base\Models\Slider
+defaultRedirect: zsoft/base/slider
+create:
+    redirect: 'zsoft/base/slider/update/:id'
+    redirectClose: zsoft/base/slider
+update:
+    redirect: zsoft/base/slider
+    redirectClose: zsoft/base/slider

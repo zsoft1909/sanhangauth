@@ -1,0 +1,152 @@
+<section class="page-infomation">
+	<div class="uk-container uk-container-center">
+		<div class="uk-grid">
+			{% if not user %}
+				<div class="uk-width-large-2-4 uk-push-1-4">
+					{% if input('recovery') == 'true' %}
+						<div class="account-signin-container mb50">
+							<div class="auth-panel__head p0 mb15">
+				                <h2 class="auth-panel__heading">Cấp lại mật khẩu</h2>
+				            </div>
+							<div class="account-wall">
+								<form class="form-signin" data-request="onRecovery" accept-charset="UTF-8" 
+									data-request-success="Auth.onFinishLogin(data)" novalidate data-request-flash data-request-validate>
+									<p class="form-errors">
+										<small class="invalid-feedback uk-text-danger" data-validate-for="username"></small>
+									</p>
+									<div class="auth-form__row">
+				                        <input type="text" name="email" autocomplete="off" class="auth-form__field" 
+				                        	placeholder="Vui lòng nhập Email" autofocus/>
+				                    </div>
+		                            <input type="hidden" name="redirect" value="{{ input('origin') }}">
+									<div class="auth-form__row">
+				                        <button type="submit" id="submit_forgot" class="auth-form__submit">Cấp lại mật khẩu</button>
+				                    </div>
+								</form>
+							</div>
+							<a href="?recovery=false" class="text-center">Quay lại đăng nhập</a>
+						</div>
+					{% else %}
+						<div class="account-signin-container mb50">
+							<div class="auth-panel__head p0 mb15">
+				                <h2 class="auth-panel__heading">Đăng nhập</h2>
+				            </div>
+							<form class="form-signin" data-request="onSignin" accept-charset="UTF-8" 
+								data-request-success="Auth.onFinishLogin(data)" novalidate data-request-flash data-request-validate>
+								<p class="form-errors">
+									<small class="invalid-feedback uk-text-danger" data-validate-for="username"></small>
+									<small class="invalid-feedback uk-text-danger" data-validate-for="password"></small>
+								</p>
+			                    <div class="auth-form__row">
+			                        <input type="text" name="username" autocomplete="off" class="auth-form__field" placeholder="Email/SĐT của bạn" />
+			                    </div>
+			                    <div class="auth-form__row">
+			                        <input type="password" name="password" autocomplete="off" class="auth-form__field" placeholder="Mật khẩu" />
+			                    </div>
+			                    <div class="auth-form__row">
+			                        <button type="submit" name="submit_reg" class="auth-form__submit">Đăng nhập</button>
+			                    </div>
+			                    <input type="hidden" name="redirect" value="{{ input('origin') }}">
+			                </form>
+			                {% if social_login_links is not empty %}
+			                    <div class="other-login uk-text-center">
+			                        <div class="relative"><span>Hoặc</span></div>
+			                        {% for name, link in social_login_links %}
+			                            <a class="social-login {{ name }}-login uk-flex uk-flex-middle uk-flex-center" href="{{ link }}">
+			                                <span>Đăng nhập với {{ name }}</span><img src="{{ ('resources/images/'~ name~'.png')|theme }}">
+			                            </a>
+			                        {% endfor %}
+			                    </div>
+			                {% endif %}
+			                <div class="uk-flex uk-flex-bottom uk-flex-space-between target-modal-link mt15">
+			                    <a href="" class="new-account">Đăng ký tài khoản mới</a>
+			                    <a href="?recovery=true">Quên mật khẩu</a>
+			                </div>
+						</div>
+
+						<div class="account-register-container mb50" style="display: none">
+							<div class="auth-panel__head p0 mb15">
+				                <h2 class="auth-panel__heading">Đăng kí</h2>
+				            </div>
+							<div class="account-wall">
+								<form class="form-signin" data-request="onRegister" accept-charset="UTF-8" 
+									data-request-success="Auth.onFinishLogin(data)" novalidate data-request-flash data-request-validate>
+									<p class="form-errors">
+										<small class="invalid-feedback uk-text-danger" data-validate-for="name"></small>
+										<small class="invalid-feedback uk-text-danger" data-validate-for="password"></small>
+									</p>
+				                    <div class="auth-form__row">
+				                        <input type="text" name="name" autocomplete="off" class="auth-form__field" placeholder="Tên của bạn" />
+				                    </div>
+				                    <div class="auth-form__row">
+				                        <input type="text" name="phone" autocomplete="off" class="auth-form__field" placeholder="SĐT của bạn" />
+				                    </div>
+				                    <div class="auth-form__row">
+				                        <input type="email" name="email" autocomplete="off" class="auth-form__field" placeholder="Email của bạn" />
+				                    </div>
+				                    <div class="auth-form__row">
+				                        <input type="password" name="password" autocomplete="off" class="auth-form__field" placeholder="Mật khẩu" />
+				                    </div>
+				                    <div class="auth-form__row">
+				                        <input type="password" name="password_confirmation" autocomplete="off" class="auth-form__field" placeholder="Nhập lại mật khẩu" />
+				                    </div>
+				                    <div class="auth-form__row">
+				                        <button type="submit" name="submit_reg" class="auth-form__submit">Đăng ký</button>
+				                    </div>
+		                            <input type="hidden" name="redirect" value="{{ input('origin') }}">
+								</form>
+								{% if social_login_links is not empty %}
+				                    <div class="other-login uk-text-center">
+				                        <div class="relative"><span>Hoặc</span></div>
+				                        {% for name, link in social_login_links %}
+				                            <a class="social-login {{ name }}-login uk-flex uk-flex-middle uk-flex-center" href="{{ link }}">
+				                                <span>Đăng nhập với {{ name }}</span><img src="{{ ('resources/images/'~ name~'.png')|theme }}">
+				                            </a>
+				                        {% endfor %}
+				                    </div>
+				                {% endif %}
+							</div>
+							<a href="#" class="mt20 uk-flex uk-flex-center returning-account">Quay lại đăng nhập</a>
+						</div>
+					{% endif %}
+				</div>
+			{% else %}
+	            <div class="uk-width-large-1-3">
+	            	<aside class="infomation-aside">
+	            		<header class="panel-head ">
+							<h4 class="heading">{{ user.name }}</h4>
+						</header>
+						<section class="panel-body">
+		            		<ul class="uk-nav tab-infomation" data-uk-tab="{connect:'#tab-infomation', swiping: false}">
+		            			{% set key = 0 %}
+		            			{% for tab in __SELF__.tabs %}
+									<li data-tab="{{ key }}"><a href="#{{ tab.id }}">{{ tab.title|trans }}</a></li>
+									{% set key = (key + 1) %}
+								{% endfor %}
+								<li>
+									<a href="#" data-request="onLogOut" data-request-success="location.reload()">{{ 'pixel.shop::component.user.logout'|trans }}</a>
+								</li>
+							</ul>
+						</section>
+	            	</aside>
+	            </div>
+	        	<div class="uk-width-large-2-3">
+	    			<ul id="tab-infomation" class="uk-switcher">
+			            {% for tab in __SELF__.tabs %}
+				            <li class="infomation-aside">
+				            	<header class="panel-head">
+									<h6 class="heading">{{ tab.title|trans }}</h6>
+								</header>
+								<section class="panel-body">
+				                    {{ tab.content|raw }}
+				                </section>
+				            </li>
+			            {% endfor %}
+			        </ul>
+			   	</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<!-- <script type="text/javascript" src='/plugins/pixel/shop/assets/js/jquery.mask.min.js'></script>
+<script type="text/javascript" src='/plugins/pixel/shop/assets/js/user.js'></script> -->
