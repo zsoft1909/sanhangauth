@@ -99,6 +99,26 @@ jobs:
             docker rm $CONTAINER_NAME -f > /dev/null 2>&1
             docker run -d --network zsoft-dev --ip $IP_HOST -v sanhangauth-storage:/var/www/html/storage --restart always --name $CONTAINER_NAME $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
             docker image prune --all
+      - name: deploy to prod
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v1.0.0
+        env:
+          AWS_ECR_REGISTRY: ${{ steps.login-ecr-aws.outputs.registry }}
+          AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+          CONTAINER_NAME: "sanhangauth"
+          IP_HOST: "172.66.0.11"
+        with:
+          host: ${{ secrets.EC2_PROD }}
+          username: ec2-user
+          key: ${{ secrets.EC2_PROD_PRIVATE_KEY }}
+          port: 22
+          envs: AWS_ECR_REGISTRY, AWS_ECR_REPOSITORY, IMAGE_TAG, CONTAINER_NAME, IP_HOST
+          script: |
+            aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
+            docker pull $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
+            docker rm $CONTAINER_NAME -f > /dev/null 2>&1
+            docker run -d --network zsoft-dev --ip $IP_HOST -v sanhangauth:/var/www/html/storage --restart always --name $CONTAINER_NAME $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
+            docker image prune --all
       - uses: FranzDiebold/github-env-vars-action@v2
         if: ${{ always() }}
 
