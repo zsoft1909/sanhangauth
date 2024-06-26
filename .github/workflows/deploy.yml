@@ -3,7 +3,7 @@ name: Deploy CI
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
       - 'staging'
 
 env:
@@ -26,7 +26,7 @@ jobs:
         run: |
           echo "AWS_ENV_PATH=${{ secrets.SSM_PARAMETER_PATH }}/staging/" >> $GITHUB_ENV
       - name: set env to production
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
           echo "AWS_ENV_PATH=${{ secrets.SSM_PARAMETER_PATH }}/prod/" >> $GITHUB_ENV
           
@@ -37,7 +37,7 @@ jobs:
         run: |
           docker build -t sanhangauth:${IMAGE_TAG}_STG -f ./docker/Dockerfile . --build-arg AWS_ENV_PATH=$AWS_ENV_PATH --build-arg AWS_REGION=$AWS_REGION
       - name: build image prod
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         env:
           AWS_REGION: ap-southeast-1
         run: |
@@ -56,7 +56,7 @@ jobs:
           docker tag sanhangauth:${IMAGE_TAG}_STG $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
           docker push $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
       - name: push image prod to ECR
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         env:
           AWS_ECR_REGISTRY: ${{ steps.login-ecr-aws.outputs.registry }}
           AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
