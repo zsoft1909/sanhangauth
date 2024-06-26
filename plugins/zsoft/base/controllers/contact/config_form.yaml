@@ -1,0 +1,10 @@
+name: Contact
+form: $/zsoft/base/models/contact/fields.yaml
+modelClass: Zsoft\Base\Models\Contact
+defaultRedirect: zsoft/base/contact
+create:
+    redirect: 'zsoft/base/contact/update/:id'
+    redirectClose: zsoft/base/contact
+update:
+    redirect: zsoft/base/contact
+    redirectClose: zsoft/base/contact

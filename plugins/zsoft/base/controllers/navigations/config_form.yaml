@@ -1,0 +1,10 @@
+name: Navigations
+form: $/zsoft/base/models/navigations/fields.yaml
+modelClass: Zsoft\Base\Models\Navigations
+defaultRedirect: zsoft/base/navigations
+create:
+    redirect: 'zsoft/base/navigations/update/:id'
+    redirectClose: zsoft/base/navigations
+update:
+    redirect: zsoft/base/navigations
+    redirectClose: zsoft/base/navigations

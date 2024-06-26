@@ -1,0 +1,33 @@
+title = "Cart"
+url = "/cart"
+layout = "default"
+is_hidden = 0
+
+[cartContainer]
+productPage = "product"
+returnPage = "return"
+==
+
+
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+	<div class="container">
+		<h1>{{ 'Cart'|_ }}</h1>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="#">{{ 'Home'|_ }}</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{ 'Cart'|_ }}</li>
+		</ol>
+	</div>
+</section><!-- #page-title end -->
+
+
+<!-- Content
+============================================= -->
+<section id="content">
+	<div class="content-wrap">
+		<div class="container">
+			{% component 'cartContainer' %}
+		</div>
+	</div>
+</section><!-- #content end -->

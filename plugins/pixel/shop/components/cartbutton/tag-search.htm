@@ -1,0 +1,7 @@
+{% if tags is not empty %}
+	<div class="tags-style-list">
+		{% for k, tag in tags %}
+			<div class="tag-item">{{ tag }}</div>			
+		{% endfor %}
+	</div>
+{% endif %}

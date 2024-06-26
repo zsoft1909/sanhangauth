@@ -1,0 +1,20 @@
+columns:
+    module:
+        label: module
+        type: text
+    name:
+        label: name
+        type: text
+    email:
+        label: email
+        type: text
+    rating:
+        label: rating
+        type: text
+    status:
+        label: status
+        type: partial
+        path: ~/plugins/zsoft/base/models/comments/_status.htm
+    created_at:
+        label: Create
+        type: text

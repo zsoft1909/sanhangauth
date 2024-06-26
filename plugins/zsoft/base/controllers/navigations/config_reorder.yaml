@@ -1,0 +1,4 @@
+title: Navigations
+modelClass: Zsoft\Base\Models\Navigations
+toolbar:
+    buttons: reorder_toolbar

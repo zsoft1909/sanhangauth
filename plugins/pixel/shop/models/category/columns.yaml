@@ -1,0 +1,18 @@
+columns:
+    name:
+        label: 'pixel.shop::lang.fields.name'
+        searchable: true
+        sortable: true
+        type: text
+    slug:
+        label: 'Đường dẫn'
+        searchable: true
+        sortable: true
+        clickable: false
+        type: partial
+        path: ~/plugins/pixel/shop/models/category/_name.htm
+    show_in_menu:
+        label: 'hiển thị trang chủ'
+        sortable: true
+        type: partial
+        path: ~/plugins/pixel/shop/models/category/_show.htm

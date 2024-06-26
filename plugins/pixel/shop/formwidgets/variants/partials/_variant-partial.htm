@@ -1,0 +1,96 @@
+<?php $var_id = @$variant['id'] ?? str_random(12); ?>
+<div class="variant-item" data-variant-pending>
+	<table id="variants-table" class="table table-form table-hover wrapper-variants" data-delete-message="<?= trans('pixel.shop::lang.messages.delete_unique') ?>">
+		<thead>
+			<tr>
+				<th>
+					<input type="hidden" class="input-option-id" value="<?php echo $var_id ?>">
+					<input
+						type="text"
+                        name="<?= $name ?>"
+						value="<?= @$variant['variant'] ?>"
+						maxlength="30"
+						class="form-control input-sm input-option-variant"
+						placeholder="<?= trans('pixel.shop::lang.messages.variant_placeholder') ?>">
+				</th>
+				<th class="padd-th" width="400" colspan="2">Thuộc tính [Color] vui lòng chọn 2 giá trị ô này<?php // echo trans('pixel.shop::lang.fields.code') ?></th>
+				<th width="100" class="padd-th text-right"><?= trans('pixel.shop::lang.fields.quantity') ?></th>
+				<th width="160" class="padd-th text-right"><?= trans('pixel.shop::lang.fields.price_diff') ?></th>
+				<th width="20"></th>
+				<th width="20"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php if(@$variant['items']): ?>
+				<?php foreach ($variant['items'] as $option): ?>
+					<?= $this->makePartial('option-partial', ['option' => $option]) ?>
+				<?php endforeach ?>
+			<?php endif ?>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="7">
+					<div class="pull-right switch-field">
+						<div class="field-switch">
+							<p class="help-block"><b><?= trans('pixel.shop::lang.fields.optional') ?></b></p>
+						</div>
+						<label class="custom-switch">
+							<input
+								type="checkbox"
+								class="input-option-optional"
+								value="<?= @$variant['optional'] ? 1 : 0 ?>"
+								<?= @$variant['optional'] ? 'checked="checked"':'' ?>>
+							<span><span>On</span><span>Off</span></span>
+							<a class="slide-button"></a>
+						</label>
+					</div>
+
+					<a href="#" class="btn btn-primary btn-sm oc-icon-plus" data-option-new>
+						<?= trans('pixel.shop::lang.messages.add_option') ?>
+					</a>
+
+					<a href="#" class="btn btn-danger btn-sm oc-icon-trash" data-variant-delete>
+						<?= trans('pixel.shop::lang.messages.delete_variant') ?>
+					</a>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+
+	<script>
+		jQuery(document).ready(function($) {
+			var dragger = tableDragger(document.getElementById('variants-table'), {
+				mode: 'row',
+				dragHandler: '.handle',
+				onlyBody: true,
+			});
+
+			dragger.on('drop',function(from, to){
+				Variant.onRefreshValues();
+			});
+		});
+	</script>
+	<style type="text/css">
+		#variants-table .find-button{
+			min-width: 40px;
+			min-height: 30px;
+		}
+		#variants-table .find-object img{
+		  	width: 30px;
+			height: 30px;
+			object-fit: scale-down;
+		}
+		#variants-table .field-mediafinder.is-populated .find-object{
+			position: relative;
+		  	display: flex;
+		  	padding-bottom: 0;
+		}
+		#variants-table .find-object .info{
+			left: 35px;
+			height: 100%;
+		}
+		#variants-table .find-object .info h4 {
+			margin: 5px 0 0;
+		}
+	</style>
+</div>

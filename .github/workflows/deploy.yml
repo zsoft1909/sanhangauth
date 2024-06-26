@@ -1,0 +1,123 @@
+name: Deploy CI
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'staging'
+
+env:
+  IMAGE_TAG: latest
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+jobs:
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Config AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.GH_CICD_AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.GH_CICD_AWS_PRIVATE_KEY }}
+          aws-region: ap-southeast-1
+      - name: set env to stating
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          echo "AWS_ENV_PATH=${{ secrets.SSM_PARAMETER_PATH }}/staging/" >> $GITHUB_ENV
+      - name: set env to production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "AWS_ENV_PATH=${{ secrets.SSM_PARAMETER_PATH }}/prod/" >> $GITHUB_ENV
+          
+      - name: build image staging
+        if: github.ref == 'refs/heads/staging'
+        env:
+          AWS_REGION: ap-southeast-1
+        run: |
+          docker build -t sanhangauth:${IMAGE_TAG}_STG -f ./docker/Dockerfile . --build-arg AWS_ENV_PATH=$AWS_ENV_PATH --build-arg AWS_REGION=$AWS_REGION
+      - name: build image prod
+        if: github.ref == 'refs/heads/main'
+        env:
+          AWS_REGION: ap-southeast-1
+        run: |
+          docker build -t sanhangauth:${IMAGE_TAG} -f ./docker/Dockerfile . --build-arg AWS_ENV_PATH=$AWS_ENV_PATH --build-arg AWS_REGION=$AWS_REGION --build-arg PRODUCTION=true
+      - name: login to ECR
+        id: login-ecr-aws
+        uses: aws-actions/amazon-ecr-login@v2
+      
+      - name: push image staging to ECR
+        if: github.ref == 'refs/heads/staging'
+        
+        env:
+          AWS_ECR_REGISTRY: ${{ steps.login-ecr-aws.outputs.registry }}
+          AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+        run: |
+          docker tag sanhangauth:${IMAGE_TAG}_STG $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
+          docker push $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
+      - name: push image prod to ECR
+        if: github.ref == 'refs/heads/main'
+        env:
+          AWS_ECR_REGISTRY: ${{ steps.login-ecr-aws.outputs.registry }}
+          AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+        run: |
+          docker tag sanhangauth:${IMAGE_TAG} $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}
+          docker push $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}
+  deploy:
+    needs: [
+      build-web
+    ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Config AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.GH_CICD_AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.GH_CICD_AWS_PRIVATE_KEY }}
+          aws-region: ap-southeast-1
+      - name: login to ECR
+        id: login-ecr-aws
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: deploy to staging
+        if: github.ref == 'refs/heads/staging'
+        uses: appleboy/ssh-action@v1.0.0
+        env:
+          AWS_ECR_REGISTRY: ${{ steps.login-ecr-aws.outputs.registry }}
+          AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+          CONTAINER_NAME: "sanhangauth"
+          IP_HOST: ${{ secrets.IP_HOST }}
+        with:
+          host: ${{ secrets.EC2_DEV }}
+          username: ec2-user
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: 22
+          envs: AWS_ECR_REGISTRY, AWS_ECR_REPOSITORY, IMAGE_TAG, CONTAINER_NAME, IP_HOST
+          script: |
+            aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
+            docker pull $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
+            docker rm $CONTAINER_NAME -f > /dev/null 2>&1
+            docker run -d --network zsoft-dev --ip $IP_HOST -v sanhangauth-storage:/var/www/html/storage --restart always --name $CONTAINER_NAME $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:${IMAGE_TAG}_STG
+            docker image prune --all
+      - uses: FranzDiebold/github-env-vars-action@v2
+        if: ${{ always() }}
+
+      - name: set slack env for success
+        if: ${{ success() }}
+        run: |
+          echo "SLACK_MESSAGE=deploy success" >> $GITHUB_ENV
+          echo "SLACK_COLOR='good'" >> $GITHUB_ENV
+
+      - name: set slack env for failure
+        if: ${{ failure() }}
+        run: |
+          echo "SLACK_MESSAGE=deploy failed" >> $GITHUB_ENV
+          echo "SLACK_COLOR='danger'" >> $GITHUB_ENV
+
+      - name: slack notification
+        uses: rtCamp/action-slack-notify@v2.0.2
+        env:
+          SLACK_USERNAME: zsoft1909
+          SLACK_TITLE: sanhangauth project deployment
+          SLACK_MESSAGE: ${{ env.SLACK_MESSAGE }} (${{ env.CI_REF_NAME }})
+          SLACK_COLOR: ${{ env.SLACK_COLOR }}

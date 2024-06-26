@@ -1,0 +1,205 @@
+title = "Trang chủ"
+url = "/"
+layout = "default"
+is_hidden = 0
+==
+use Zsoft\Base\Models\Slider;
+use Zsoft\Base\Models\Advertise;
+use Pixel\Shop\Models\Category;
+use Pixel\Shop\Models\Item;
+use Indikator\News\Models\Posts;
+function onStart(){
+    $this['is_page'] = 'home';
+
+    $this['sliders'] = Slider::where('status', 1)->orderBy('sort_order', 'asc')->get();
+    $this['advertises'] = Advertise::where('status', 1)->where('position', 1)->orderBy('id', 'asc')->take(2)->get();
+    $this['partners'] = Advertise::where('status', 1)->where('position', 2)->orderBy('id', 'asc')->get();
+    $this['categorys'] = Category::where('show_in_menu', 1)->where('parent_id', 0)->orderBy('nest_left', 'asc')->take(3)->get();
+
+    $this['prdNews'] = Item::where('is_visible', 1)->orderBy('id', 'desc')->take(4)->get();
+    $this['prdHot'] = Item::where('is_visible', 1)->where('is_highlight', 1)->orderBy('id', 'desc')->take(4)->get();
+
+    $this['featuredPosts'] = Posts::where('featured', 1)->where('status', 1)->orderBy('id', 'desc')->take(4)->get();
+}
+
+==
+<!-- Content
+============================================= -->
+<section id="content">
+    <div class="content-wrap">
+        <div class="container clearfix">
+            <div class="row align-items-stretch gutter-20 mb-5 min-vh-60">
+                <div class="col-xl-8 min-vh-50">
+                    {% if sliders is not empty %}
+                        <div class="fslider h-100" data-arrows="false">
+                            <div class="flexslider">
+                                <div class="slider-wrap">
+                                    {% for k, slide in sliders %}
+                                        <div class="slide">
+                                            <a href="{{ slide.target }}" title="{{ slide.name }}" class="img-cover">
+                                                <img src="{{ slide.image|media }}" alt="{{ slide.name }}">
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-xl-4">
+                    {% if advertises is not empty %}
+                        <div class="row align-items-stretch gutter-20 min-vh-25 h-100">
+                            {% for k, advertise in advertises %}
+                                <div class="col-12 col-md-6 col-xl-12 min-vh-25 min-vh-md-0">
+                                    <a href="{{ advertise.target }}" class="grid-inner d-block h-100" style="background-image: url('{{ advertise.image|media }}');"></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if setting.promo is not empty %}
+            <div class="promo parallax promo-full bottommargin-lg" data-bottom-top="background-position:0px 300px;" data-top-bottom="background-position:0px -300px;">
+                {% for k, val in setting.promo %}
+                    <div class="container clearfix">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-lg">
+                                <h3>{{ val.title|raw }}</h3>
+                                <span>{{ val.description }}</span>
+                            </div>
+                            <div class="col-12 col-lg-auto mt-4 mt-lg-0">
+                                <a href="{{ val.target }}" class="button button-large button-circle m-0">Start Shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="container">
+            {% if categorys is not empty %}
+                <div class="row justify-content-center col-mb-50 mb-0">
+                    {% for k, category in categorys %}
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="feature-box text-center media-box fbox-bg">
+                                <div class="fbox-media">
+                                    <img src="{{ category.image|media }}" alt="{{ category.name }}">
+                                </div>
+                                <div class="fbox-content">
+                                    <h3>{{ category.name }}<span class="subtitle">{{ category.description }}</span></h3>
+                                    <p><a href="{{ 'category-product'|page({slug: category.slug}) }}" class="btn btn-secondary">Shop Now</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="row justify-content-center col-mb-50">
+                {% if prdNews is not empty %}
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="fancy-title title-border">
+                            <h4>{{ 'Recently Arrived'|_ }}</h4>
+                        </div>
+                        <div class="posts-sm row col-mb-30" id="recent-shop-list-sidebar">
+                            {% partial 'product/list-tab' products=prdNews %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if prdHot is not empty %}
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="fancy-title title-border">
+                            <h4>{{ 'Popular Products'|_ }}</h4>
+                        </div>
+
+                        <div class="posts-sm row col-mb-30" id="popular-shop-list-sidebar">
+                            {% partial 'product/list-tab' products=prdHot %}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if featuredPosts is not empty %}
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="fancy-title title-border">
+                            <h4>{{ 'Featured Post'|_ }}</h4>
+                        </div>
+                        <div class="posts-sm row col-mb-30" id="">
+                            {% for k, post in featuredPosts %}
+                                {% set subCat = post.categories %}
+                                <div class="entry col-12">
+                                    <div class="grid-inner row no-gutters">
+                                        <div class="col-auto">
+                                            <div class="entry-image">
+                                                <a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: post.slug}) }}">
+                                                    <img class="rounded-circle" src="{{ post.image|media }}" alt="{{ post.title }}">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col pl-3">
+                                            <div class="entry-title">
+                                                <h4>
+                                                    <a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: post.slug}) }}">{{ post.title }}</a>
+                                                </h4>
+                                            </div>
+                                            <div class="entry-meta">
+                                                <ul>
+                                                    <li><i class="icon-calendar3"></i> {{ post.published_at|ldate('d M, Y') }}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="clear"></div><div class="line"></div>
+            {% if partners is not empty %}
+                <div id="oc-clients-full" class="owl-carousel image-carousel carousel-widget" 
+                    data-margin="30" data-nav="false" data-autoplay="5000" data-pagi="false" 
+                    data-items-xs="2" data-items-sm="3" data-items-md="4" data-items-lg="5" data-items-xl="7">
+                    {% for k, partner in partners %}
+                        <div class="oc-item">
+                            <a href="{{ partner.target }}">
+                                <img src="{{ partner.image|media }}" alt="{{ partner.name }}">
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="si-sticky si-sticky-right d-none d-lg-block" style="z-index: 399;">
+            <a href="{{ setting.facebook }}" class="social-icon si-colored si-facebook" data-animate="bounceInRight">
+                <i class="icon-facebook"></i>
+                <i class="icon-facebook"></i>
+            </a>
+            <a href="{{ setting.facebook }}" class="social-icon si-colored si-twitter" data-animate="bounceInRight" data-delay="100">
+                <i class="icon-twitter"></i>
+                <i class="icon-twitter"></i>
+            </a>
+            <a href="{{ setting.facebook }}" class="social-icon si-colored si-pinterest" data-animate="bounceInRight" data-delay="200">
+                <i class="icon-pinterest"></i>
+                <i class="icon-pinterest"></i>
+            </a>
+            <a href="{{ setting.facebook }}" class="social-icon si-colored si-instagram" data-animate="bounceInRight" data-delay="300">
+                <i class="icon-instagram"></i>
+                <i class="icon-instagram"></i>
+            </a>
+            <a href="{{ setting.facebook }}" class="social-icon si-colored si-gplus" data-animate="bounceInRight" data-delay="600">
+                <i class="icon-gplus"></i>
+                <i class="icon-gplus"></i>
+            </a>
+            <a href="{{ setting.facebook }}" class="social-icon si-colored si-rss" data-animate="bounceInRight" data-delay="700">
+                <i class="icon-rss"></i>
+                <i class="icon-rss"></i>
+            </a>
+        </div>
+    </div>
+</section><!-- #content end -->

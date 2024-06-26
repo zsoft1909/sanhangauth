@@ -1,0 +1,71 @@
+
+cityid:
+    label: 'Tỉnh/Thành'
+    type: partial
+    path: $/pixel/shop/models/user/_province.htm
+    disabled: true
+    tab: 'Shipping'
+districtid:
+    label: 'Quận/Huyện'
+    type: partial
+    path: $/pixel/shop/models/user/_district.htm
+    disabled: true
+    tab: 'Shipping'
+wardid:
+    label: 'Xã/Phường'
+    type: partial
+    path: $/pixel/shop/models/user/_ward.htm
+    disabled: true
+    tab: 'Shipping'
+shipping_address:
+    label: 'Địa chỉ'
+    type: text
+    disabled: true
+    tab: 'Shipping'
+father:
+    label: 'Thông tin của Ba'
+    type: repeater
+    maxItems: 1
+    tab: 'Father'
+    displayMode: builder
+    form:
+        fields:
+            name:
+                label: 'Họ và tên'
+                span: auto
+                type: text
+                disabled: true
+            phone:
+                label: 'Số điện thoại'
+                span: auto
+                type: text
+                disabled: true
+mother:
+    label: 'Thông tin của Mẹ'
+    type: repeater
+    maxItems: 1
+    tab: 'Mother'
+    form:
+        fields:
+            name:
+                label: 'Họ và tên'
+                span: auto
+                type: text
+                disabled: true
+            phone:
+                label: 'Số điện thoại'
+                span: auto
+                type: text
+                disabled: true
+baby:
+    label: 'Thông tin của bé'
+    type: repeater
+    maxItems: 1
+    tab: 'Child'
+    form:
+        fields:
+            name:
+                label: 'Họ và tên'
+                span: auto
+                type: text
+                disabled: true

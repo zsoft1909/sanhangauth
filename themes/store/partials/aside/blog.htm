@@ -1,0 +1,117 @@
+==
+use Indikator\News\Models\Posts;
+use Zsoft\Base\Models\Comments;
+function onStart(){
+    $this['popularPosts'] = Posts::where('featured', 1)->where('status', 1)->orderBy('id', 'desc')->take(4)->get();
+    $this['recentPosts'] = Posts::where('status', 1)->orderBy('id', 'desc')->take(4)->get();
+    $this['comments'] = Comments::where('module', 'blog')->where('status', 1)->take(3)->get();
+}
+==
+<div class="sidebar-widgets-wrap">
+	<div class="widget clearfix">
+		<div class="tabs mb-0 clearfix" id="sidebar-tabs">
+			<ul class="tab-nav clearfix">
+				<li><a href="#tabs-1">{{ 'Popular'|_ }}</a></li>
+				<li><a href="#tabs-2">{{ 'Recent'|_ }}</a></li>
+				<li><a href="#tabs-3"><i class="icon-comments-alt mr-0"></i></a></li>
+			</ul>
+			<div class="tab-container">
+				<div class="tab-content clearfix" id="tabs-1">
+					{% if popularPosts is not empty %}
+						<div class="posts-sm row col-mb-30" id="popular-post-list-sidebar">
+							{% for k, val in popularPosts %}
+								{% set subCat = val.categories %}
+								<div class="entry col-12">
+									<div class="grid-inner row no-gutters">
+										<div class="col-auto">
+											<div class="entry-image">
+												<a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: val.slug}) }}">
+													<img class="rounded-circle" src="{{ val.image|media }}" alt="{{ val.title }}">
+												</a>
+											</div>
+										</div>
+										<div class="col pl-3">
+											<div class="entry-title">
+												<h4>
+													<a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: val.slug}) }}">{{ val.title }}</a>
+												</h4>
+											</div>
+											<div class="entry-meta">
+												<ul>
+													<li><i class="icon-comments-alt"></i> {{ val.comments.count }} {{ 'Comments'|_ }}</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+				<div class="tab-content clearfix" id="tabs-2">
+					{% if recentPosts is not empty %}
+						<div class="posts-sm row col-mb-30" id="recent-post-list-sidebar">
+							{% for k, val in recentPosts %}
+								{% set subCat = val.categories %}
+								<div class="entry col-12">
+									<div class="grid-inner row no-gutters">
+										<div class="col-auto">
+											<div class="entry-image">
+												<a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: val.slug}) }}">
+													<img class="rounded-circle" src="{{ val.image|media }}" alt="{{ val.title }}">
+												</a>
+											</div>
+										</div>
+										<div class="col pl-3">
+											<div class="entry-title">
+												<h4><a href="{{ 'detail-post'|page({category: subCat[0].slug, slug: val.slug}) }}">{{ val.title }}</a></h4>
+											</div>
+											<div class="entry-meta">
+												<ul>
+													<li><i class="icon-comments-alt"></i> {{ val.comments.count }} {{ 'Comments'|_ }}</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+				<div class="tab-content clearfix" id="tabs-3">
+					{% if comments is not empty %}
+						<div class="posts-sm row col-mb-30" id="recent-comments-list-sidebar">
+							{% for k, comment in comments %}
+								<div class="entry col-12">
+									<div class="grid-inner row no-gutters">
+										<div class="col-auto">
+											<div class="entry-image">
+												<a href="#">
+													<img alt='Image' src="{{ 'assets/images/no_avatar.png'|theme }}" class="rounded-circle"/>
+												</a>
+											</div>
+										</div>
+										<div class="col pl-3">
+											<strong>{{ comment.name }}:</strong> {{ html_limit(comment.content, 50) }}
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% if tags is not empty %}
+		<div class="widget clearfix">
+			<h4>{{ 'Tag Cloud'|_ }}</h4>
+			<div class="tagcloud">
+				{% for k, tag in tags %}
+					<a href="{{ 'tag-post'|page({tag: tag}) }}">{{ tag }}</a>
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+</div>

@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="popup">&times;</button>
+    <h4 class="modal-title">Chọn biến thể dùng cho Combo</h4>
+</div>
+<?php
+    $item = [
+        'id' => $product->id,
+        'name' => $product->name,
+        'image' => $product->image->getPath(),
+        'slug' => $product->slug,
+        'price' => $product->price,
+        'old_price' => $product->getOldPrice(),
+        'options' => '',
+        'options_index' => '',
+    ]; 
+?>
+<div class="modal-body">
+    <!-- Any popup content goes here -->
+    <div class="d-flex">
+        <div class="thumb">
+            <span><img src="<?php echo $product->image->getPath() ?>" alt=""></span>
+        </div>
+        <div class="info">
+            <h3 class="title"><?php echo $product->name ?></h3>
+            <div class="desc"></div>
+            <div class="price-sale" data-price="<?php echo $product->price ?>">
+                Giá giảm: <span><?php echo number_format($product->price, 0, ',', '.') ?>đ</span>
+            </div>
+            <?php if($product->is_on_sale): ?>
+                <div class="price-old" data-price="<?php echo $product->getOldPrice() ?>">
+                    Giá chưa giảm: <span><?php echo number_format($product->getOldPrice(), 0, ',', '.') ?>đ</span>
+                </div>
+            <?php endif ?>
+            <div class="cta-delete" data-product="<?php echo $product->id ?>">
+                <button class="btn btn-danger btn-sm oc-icon-delete" data-delete-product>Bỏ sản phẩm ra khỏi combo</button>
+                <div class="item"><?php echo json_encode($item) ?></div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix" style="margin-bottom: 10px;"></div>
+    <?php if ($product->is_with_variants): ?>
+        <?php foreach ($product->variants as $key => $variant): ?>
+            <div class="form-group switch-field span-<?php echo ($key % 2) ? 'right' : 'left' ?>">
+                <div class="type-text"><?= $variant['variant'] ?></div>
+                <?php foreach ($variant['items'] as $keyp => $item): ?>
+                    <div class="radio custom-radio">
+                        <input name="radio<?= $key ?>" value="<?= $item['ref'] ?>" type="radio" 
+                            id="radio_<?= $key.$keyp ?>" data-price="<?= $item['price'] ?>">
+                        <label for="radio_<?= $key.$keyp ?>" class="storm-icon-pseudo"><?= $item['val'] ?></label>
+                        <p class="help-block">Quantity: <?= $item['quantity'] ?>, Price: <?= $item['price'] ?></p>
+                    </div>
+                <?php endforeach ?>
+            </div>
+        <?php endforeach ?>
+        <div class="clearfix"></div>
+    <?php endif ?>
+</div>
+<div class="modal-footer">
+    <!-- Popup action buttons go here -->
+    <button type="button" class="btn btn-primary oc-icon-send" data-add-variant data-respone="<?php echo $eleRespone ?>">
+        Thêm vào combo
+    </button>
+    <button
+        type="button"
+        class="btn btn-default"
+        data-dismiss="popup">
+        <?= e(trans('backend::lang.relation.close')) ?>
+    </button>
+</div>

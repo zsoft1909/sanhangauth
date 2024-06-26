@@ -1,0 +1,126 @@
+title = "Bảo trì hoạt động Website"
+url = "/maintenance"
+is_hidden = 0
+[setting]
+==
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="robots" content="index, follow"/>
+        <meta name="author" content="Zsoft">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="generator" content="Zsoft">
+
+        {% if setting.favicon is not empty %}
+        <link rel="icon" type="image/png" href="{{ setting.favicon |media }}">
+        {% else %}
+        <link rel="icon" type="image/png" href="{{ 'assets/images/favicon.png' |theme }}">
+        {% endif %}
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap" rel="stylesheet" type="text/css" />
+
+        <link type="text/css" href="{{ 'assets/css/bootstrap.css'|theme }}" rel="stylesheet" />
+        <link type="text/css" href="{{ 'assets/style.css'|theme }}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ 'assets/css/dark.css'|theme }}" type="text/css" />
+        <link rel="stylesheet" href="{{ 'assets/css/font-icons.css'|theme }}" type="text/css" />
+        <link rel="stylesheet" href="{{ 'assets/css/animate.css'|theme }}" type="text/css" />
+        <link rel="stylesheet" href="{{ 'assets/css/magnific-popup.css'|theme }}" type="text/css" />
+
+        <link rel="stylesheet" href="{{ 'assets/css/custom.css'|theme }}" type="text/css" />
+        {% styles %}
+    </head>
+    <body class="stretched">
+        <div id="wrapper" class="clearfix">
+            <!-- Header
+            ============================================= -->
+            <header id="header" class="transparent-header full-header">
+                <div id="header-wrap">
+                    <div class="container">
+                        <div class="header-row">
+                            <!-- Logo
+                            ============================================= -->
+                            <div id="logo" class="mx-auto border-0 px-0">
+                                <a href="{{ url('/') }}" data-dark-logo="{{ setting.logo|media }}">
+                                    <img src="{{ setting.logo|media }}" alt="{{ setting.company_name }}">
+                                </a>
+                            </div><!-- #logo end -->
+                        </div>
+                    </div>
+                </div>
+                <div class="header-wrap-clone"></div>
+            </header><!-- #header end -->
+
+            <!-- Content
+            ============================================= -->
+            <section id="content" class="include-header">
+                <div class="content-wrap py-0">
+                    <div class="container">
+                        <div class="vh-100">
+                            <div class="vertical-middle">
+                                <div class="heading-block center border-bottom-0">
+                                    <h1>Site is Under Maintenance</h1>
+                                    <span>Please check back in sometime.</span>
+                                </div>
+                                <div class="row justify-content-center col-mb-50">
+                                    <div class="col-sm-6 col-lg-4">
+                                        <div class="feature-box fbox-center fbox-light fbox-plain">
+                                            <div class="fbox-icon">
+                                                <a href="#"><i class="icon-warning-sign"></i></a>
+                                            </div>
+                                            <div class="fbox-content">
+                                                <h3>Why is the Site Down?</h3>
+                                                <p>The site is under maintenance probably because we are working to improve this website drastically.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-4">
+                                        <div class="feature-box fbox-center fbox-light fbox-plain">
+                                            <div class="fbox-icon">
+                                                <a href="#"><i class="icon-time"></i></a>
+                                            </div>
+                                            <div class="fbox-content">
+                                                <h3>What is the Downtime?</h3>
+                                                <p>We are usually back within 10-15 minutes but it definitely depends on the issue.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-4">
+                                        <div class="feature-box fbox-center fbox-light fbox-plain">
+                                            <div class="fbox-icon">
+                                                <a href="#"><i class="icon-email3"></i></a>
+                                            </div>
+                                            <div class="fbox-content">
+                                                <h3>Do you need Support?</h3>
+                                                <p>You may simply send us an Email at <a href="mailto:{{ setting.email }}">{{ setting.email }}</a> if you need urgent support.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section><!-- #content end -->
+
+        </div><!-- #wrapper end -->
+        <!-- Go To Top
+        ============================================= -->
+        <div id="gotoTop" class="icon-angle-up"></div>
+
+        <!-- JavaScripts
+        ============================================= -->
+        <script src="{{ 'assets/js/jquery.js'|theme }}"></script>
+        <script src="{{ 'assets/js/plugins.min.js'|theme }}"></script>
+
+        <!-- Footer Scripts
+        ============================================= -->
+        <script src="{{ 'assets/js/functions.js'|theme }}?v={{ version }}"></script>
+        {% framework extras %}
+        {% scripts %}
+
+    </body>
+</html>

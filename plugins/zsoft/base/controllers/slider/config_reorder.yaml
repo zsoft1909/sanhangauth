@@ -1,0 +1,4 @@
+title: Slider
+modelClass: Zsoft\Base\Models\Slider
+toolbar:
+    buttons: reorder_toolbar

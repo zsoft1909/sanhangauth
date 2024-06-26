@@ -1,0 +1,39 @@
+fields:
+    fullname:
+        label: 'Họ và tên'
+        span: auto
+        type: text
+    phone:
+        label: 'Số điện thoại'
+        span: auto
+        type: text
+    email:
+        label: Email
+        span: auto
+        type: text
+    subject:
+        label: 'Tiêu đề liên hệ'
+        span: auto
+        type: text
+    type:
+        label: 'Loại liên hệ'
+        options:
+            1: 'Form liên hệ'
+            2: 'Đăng ký nhận bản tin'
+        showSearch: true
+        span: auto
+        type: dropdown
+    status:
+        label: 'Trạng thái xử lý'
+        options:
+            - 'Chờ xử lý'
+            - 'Đã xử lý'
+            - 'Đã hủy'
+        showSearch: true
+        span: auto
+        type: dropdown
+    content:
+        label: 'Nội dung'
+        size: ''
+        span: full
+        type: textarea

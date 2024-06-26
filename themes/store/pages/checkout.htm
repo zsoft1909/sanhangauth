@@ -1,0 +1,111 @@
+title = "Checkout"
+url = "/cart/checkout"
+layout = "default"
+is_hidden = 0
+
+[cartContainer]
+productPage = "product"
+returnPage = "return"
+==
+function onStart(){
+	$this->addJs('/plugins/pixel/shop/assets/js/jquery.mask.min.js');
+	$this->addJs('/plugins/pixel/shop/assets/js/jquery.validate.min.js');
+	$this->addJs('/plugins/pixel/shop/assets/js/cart.js');
+}
+==
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+	<div class="container clearfix">
+		<h1>{{ 'Checkout'|_ }}</h1>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{{ url('/') }}">{{ 'Home'|_ }}</a></li>
+			<li class="breadcrumb-item"><a href="{{ 'cart'|page }}">{{ 'Cart'|_ }}</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{ 'Checkout'|_ }}</li>
+		</ol>
+	</div>
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<div id="checkout-container">
+				<form class="info-form" novalidate="" id="form" data-request="onSendCheckout" data-request-flash data-request-validate data-request-complete="Cart.focusToInvalidFields(data)">
+					<div class="row col-mb-30 gutter-50 mb-4 d-none">
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-body">
+									Returning customer? <a href="{{ 'login'|page }}">Click here to login</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-body">
+									Have a coupon? <a href="{{ 'cart'|page }}">Click here to enter your code</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row col-mb-50 gutter-50">
+						<div class="col-lg-6">
+							<h3>{{ 'Billing Address'|_ }}</h3>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde, vel odio non dicta provident sint ex autem mollitia dolorem illum repellat ipsum aliquid illo similique sapiente fugiat minus ratione.</p>
+							<div id="billing-form">
+								<div class="row">
+									{% partial '@customer_information' %}
+								</div>
+								{% partial '@billing_address' %}
+							</div>
+						</div>
+
+						<div class="col-lg-6">
+							<h3>{{ 'Shipping Address'|_ }}</h3>
+							<div id="shipping-form">
+								{% partial '@shipping_address' %}
+							</div>
+						</div>
+
+						<div class="w-100"></div>
+
+						<div class="col-lg-6">
+							<h4>{{ 'Your Orders'|_ }}</h4>
+							{% partial '@cart' no_update=true %}
+						</div>
+
+						<div class="col-lg-6">
+							{% partial '@cart-total' %}
+
+							{% partial '@methods' %}
+							<div class="accordion clearfix">
+								<div class="accordion-header">
+									<div class="accordion-icon">
+										<i class="accordion-closed icon-line-minus"></i>
+										<i class="accordion-open icon-line-check"></i>
+									</div>
+									<div class="accordion-title">{{ 'Payment on delivery'|_ }}</div>
+									<input type="radio" value="cash_on_delivery" name="gateway" data-msg-required="Hình thức vận chuyển" id="method-cash_on_delivery" required="" checked style="display: none;">
+								</div>
+								<div class="accordion-content clearfix">{{ settings.cash_on_delivery_customer_information }}</div>
+							</div>
+							<input type="hidden" id="tokenization" value="{{ tokenization }}">
+							<button id="yes_token" class="button-payment button button-3d float-right" onclick="checkType()" type="submit" 
+							data-attach-loading>Place Order</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section><!-- #content end -->
+<script>
+    function checkType() {
+        if (document.getElementById("tokenization").value && (document.querySelector('input[name="gateway"]:checked').value == 'pixelpay')) {
+            createrOrder();
+        }
+        return true;
+    }
+</script>

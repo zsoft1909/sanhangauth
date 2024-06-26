@@ -1,0 +1,169 @@
+tabs:
+    fields:
+        company_name:
+            label: 'Tên công ty'
+            span: auto
+            type: text
+            tab: Company
+        address:
+            label: 'Địa chỉ'
+            span: auto
+            type: text
+            tab: Company
+        phone:
+            label: 'Số điện thoại'
+            span: auto
+            type: text
+            tab: Company
+        hotline:
+            label: Hotline
+            span: auto
+            type: text
+            tab: Company
+        email:
+            label: Email
+            span: auto
+            type: text
+            tab: Company
+        email_contact:
+            label: 'Email nhận mail thông tin liên hệ'
+            span: auto
+            type: text
+            tab: Company
+        logo:
+            label: 'Logo đầu trang'
+            mode: file
+            span: auto
+            type: mediafinder
+            tab: Company
+        favicon:
+            label: Favicon
+            span: auto
+            mode: file
+            type: mediafinder
+            tab: Company
+        slogan:
+            label: 'Logo chân trang'
+            span: auto
+            type: mediafinder
+            tab: Company
+        website:
+            label: Website
+            span: auto
+            type: text
+            tab: Company
+        company_desc:
+            label: 'Mô tả ngắn công ty'
+            span: full
+            mode: file
+            type: textarea
+            tab: Company
+        facebook:
+            label: 'Fanpage Facebook'
+            span: auto
+            type: text
+            tab: Social
+        youtube:
+            label: Youtube
+            span: auto
+            type: text
+            tab: Social
+        tiktok:
+            label: Tiktok
+            span: auto
+            type: text
+            tab: Social
+        instagram:
+            label: Instagram
+            span: auto
+            type: text
+            tab: Social
+        title_seo:
+            label: 'Tiêu đề SEO'
+            span: full
+            type: text
+            tab: SEO
+        keyword_seo:
+            label: 'Từ khóa SEO'
+            span: full
+            type: text
+            tab: SEO
+        description_seo:
+            label: 'Mô tả SEO'
+            size: ''
+            span: full
+            type: textarea
+            tab: SEO
+        image_share:
+            label: 'Image Share'
+            mode: file
+            span: full
+            type: mediafinder
+            tab: SEO
+        script_head:
+            label: 'Script đầu trang'
+            size: ''
+            span: full
+            type: textarea
+            tab: Advanced
+        script_body:
+            label: 'Script thân trang'
+            size: ''
+            span: full
+            type: textarea
+            tab: Advanced
+        fb_admin:
+            label: 'Facebook App ID'
+            span: auto
+            type: text
+            tab: Advanced
+        fb_app:
+            label: 'Facebook Admin ID'
+            span: auto
+            type: text
+            tab: Advanced
+        promo:
+            tab: 'Promotion'
+            label: 'Blocks'
+            prompt: 'Add block'
+            span: full
+            type: repeater
+            maxItems: 1
+            form:
+                fields:
+                    title:
+                        label: 'Tiêu đề'
+                        span: full
+                        type: text
+                    description:
+                        label: 'Mô tả'
+                        span: full
+                        type: textarea
+                    target:
+                        label: 'Link điều hướng'
+                        span: full
+                        type: text
+        extras:
+            tab: 'Extras'
+            label: 'Blocks'
+            prompt: 'Add block'
+            span: full
+            type: repeater
+            maxItems: 3
+            form:
+                fields:
+                    icon:
+                        label: 'Icon'
+                        span: storm
+                        type: text 
+                        cssClass: col-lg-4
+                    title:
+                        label: 'Tiêu đề'
+                        span: storm
+                        type: text
+                        cssClass: col-lg-4
+                    description:
+                        label: 'Mô tả'
+                        span: storm
+                        type: text
+                        cssClass: col-lg-4

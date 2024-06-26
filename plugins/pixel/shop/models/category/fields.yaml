@@ -1,0 +1,44 @@
+fields:
+    name:
+        label: 'pixel.shop::lang.fields.name'
+        oc.commentPosition: ''
+        span: auto
+        type: text
+        cssClass: oc-icon-font
+    parent:
+        label: 'Danh mục cha'
+        span: auto
+        type: dropdown
+    show_in_menu: 
+        label: 'Hiển thị trang chủ'
+        span: full
+        type: switch
+        default: false
+    description:
+        label: 'Giới thiệu ngắn'
+        type: textarea
+        span: full
+        size: tiny
+    _image_section:
+        type: section
+        comment: 'Image'
+    image:
+        label: 'Ảnh'
+        mode: file
+        span: full
+        type: mediafinder
+    _meta_section:
+        type: section
+        comment: SEO Meta Tags
+    meta_keywords:
+        label: 'pixel.shop::lang.fields.keywords'
+        type: taglist
+        mode: string
+        separator: comma
+        cssClass: oc-icon-search
+    meta_description:
+        label: 'pixel.shop::lang.fields.description'
+        span: full
+        type: textarea
+        size: tiny
+        cssClass: oc-icon-pencil-square-o

@@ -1,0 +1,31 @@
+columns:
+    id:
+        label: id
+        type: number
+        invisible: true
+    position:
+        label: 'Vị trí'
+        type: partial
+        path: ~/plugins/zsoft/base/models/navigations/_position.htm
+        width: 150px
+        sortable: false
+    name:
+        label: 'Tên menu'
+        type: text
+        sortable: false
+        searchable: true
+    target:
+        label: 'Link điều hướng'
+        type: text
+        sortable: false
+    status:
+        label: 'Trạng Thái'
+        type: partial
+        path: ~/plugins/zsoft/base/models/navigations/_status.htm
+        width: 150px
+        sortable: false
+    created_at:
+        label: 'Ngày tạo'
+        type: text
+        width: 150px
+        sortable: false
