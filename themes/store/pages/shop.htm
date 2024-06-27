@@ -3,3 +3,106 @@ url = "/shop"
 layout = "default"
 is_hidden = 0
 ==
+use Pixel\Shop\Models\Item;
+function onStart(){
+	$this['products'] = Item::where('is_visible', 1)->orderBy('id', 'desc')->paginate(12);
+}
+==
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+
+	<div class="container clearfix">
+		<h1>{{ 'Shop'|_ }}</h1>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ url('/') }}">{{ 'Home'|_ }}</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">{{ 'Shop'|_ }}</li>
+		</ol>
+	</div>
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<!-- Shop
+			============================================= -->
+			{% if products is not empty %}
+				<div id="shop" class="shop row grid-container gutter-30" data-layout="fitRows">
+					{% for k, product in products %}
+						<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
+					        <div class="grid-inner">
+					            <div class="product-image">
+					                <a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
+				                    	<img src="{{ product.image_default|media }}" alt="{{ product.name }}">
+				                    </a>
+				                    {% if product.image_hover is not empty %}
+					                    <a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
+					                    	<img src="{{ product.image_hover|media }}" alt="{{ product.name }}">
+					                    </a>
+					                {% endif %}
+					            	{% if product.is_on_sale %}
+                                    	<div class="sale-flash badge badge-success p-2 text-uppercase">{{ 'Sale!'|_ }}</div>
+                                    {% endif %}
+                                    {% if product.is_out_of_stock %}
+										<div class="sale-flash badge badge-secondary p-2">{{ 'Out of Stock'|_ }}</div>
+                                    {% endif %}
+									<div class="bg-overlay">
+										<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
+											{% if product.is_with_variants == 0 %}
+												<a href="#" class="btn btn-dark mr-2 ajax-addtocart" 
+												data-request-data="id: {{ product.id }}, quantity: 1, price: {{ product.price }}" 
+												data-attach-loading="" data-request-form data-request="onAddToCart" 
+												data-request-flash data-request-success="CartButton.onSuccess(data)"><i class="icon-shopping-cart"></i></a>
+											{% else %}
+												<a href="{{ 'detail-product'|page({slug: product.slug}) }}?display=popup" class="btn btn-dark" data-lightbox="ajax"><i class="icon-shopping-cart"></i></a>
+											{% endif %}
+											<a href="{{ 'detail-product'|page({slug: product.slug}) }}?display=popup" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
+										</div>
+										<div class="bg-overlay-bg bg-transparent"></div>
+									</div>
+								</div>
+								<div class="product-desc">
+									<div class="product-title">
+										<h3><a href="{{ 'detail-product'|page({slug: product.slug}) }}">{{ product.name }}</a></h3>
+									</div>
+									<div class="product-price">
+										{% if product.is_on_sale %}
+											<del>{{ product.getOldPrice()|currency({format: 'short'}) }}</del> 
+											<ins>{{ product.price|currency({format: 'short'}) }}</ins>
+										{% else %}
+											{{ product.price|currency({format: 'short'}) }}
+										{% endif %}
+									</div>
+									<div class="product-rating">{{ product.getRatingIcon()|raw }}</div>
+					            </div>
+					        </div>
+					    </div>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			<!-- Pagination
+				============================================= -->
+			{% if products.hasPages %}
+			    <ul class="pagination mt-5 pagination-circle justify-content-center">
+			        <li class="page-item {{ products.currentPage > 1 ?: 'disabled' }}">
+			           <a class="page-link" href="{{ products.previousPageUrl }}" rel="prev"><i class="icon-angle-left"></i></a>
+			        </li>
+			        {% for page in range(1, products.lastPage) %}
+			            <li  class="page-item {{ products.currentPage == page ? 'active' }}">
+			                <a class="page-link" href="{{ products.url(page) }}">{{ page }}</a>
+			            </li>
+			        {% endfor %}
+			        <li class="page-item {{ products.hasMorePages ?: 'disabled' }}">
+			            <a class="page-link" href="{{ products.nextPageUrl }}" rel="next"><i class="icon-angle-right"></i></a>
+			        </li>
+			    </ul>
+			{% endif %}
+			<!-- .pager end -->
+		</div>
+	</div>
+</section>

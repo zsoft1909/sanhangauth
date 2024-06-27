@@ -52,6 +52,11 @@ typeCategoriesFilter = "dropdown"
 											<a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
 		                                        <img src="{{ product.image_default|media }}" alt="{{ product.name }}">
 		                                    </a>
+		                                    {% if product.image_hover is not empty %}
+							                    <a href="{{ 'detail-product'|page({slug: product.slug}) }}" title="{{ product.name }}">
+							                    	<img src="{{ product.image_hover|media }}" alt="{{ product.name }}">
+							                    </a>
+							                {% endif %}
 		                                    {% if product.is_on_sale %}
 		                                    	<div class="sale-flash badge badge-success p-2 text-uppercase">Sale!</div>
 		                                    {% endif %}

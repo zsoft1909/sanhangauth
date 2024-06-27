@@ -21,7 +21,7 @@ class BuilderTableCreatePixelShopCategories extends Migration
             $table->string('meta_keywords')->nullable();
             $table->text('meta_description')->nullable();
 
-            $table->integer('parent_id')->index()->default(0);
+            $table->integer('parent_id')->nullable()->index()->default(0);
             $table->integer('nest_left')->nullable();
             $table->integer('nest_right')->nullable();
             $table->integer('nest_depth')->nullable();
