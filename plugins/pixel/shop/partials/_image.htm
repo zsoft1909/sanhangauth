@@ -6,7 +6,7 @@
             data-handler="onShowImage"
             data-request-data="image:\''.$record->image_default.'\'"
             href="javascript:;">
-            <img src="/storage/app/media'.$record->image_default.'" height="42" alt="'.$record->name.'">
+            <img src="'.\System\Classes\MediaLibrary::url($record->image_default).'" height="42" alt="'.$record->name.'">
         </a>
     ';
 }

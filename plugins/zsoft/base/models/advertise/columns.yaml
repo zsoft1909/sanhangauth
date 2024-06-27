@@ -2,21 +2,27 @@ columns:
     id:
         label: id
         type: number
+        invisible: true
     position:
-        label: position
-        type: number
+        label: 'Vị trí'
+        type: partial
+        path: ~/plugins/zsoft/base/models/advertise/_position.htm
+        width: 250px
+    image:
+        label: image
+        type: partial
+        path: ~/plugins/zsoft/base/models/advertise/_image.htm
+        width: 80px
+        sortable: false
     name:
         label: name
         type: text
-    image:
-        label: image
-        type: text
-    target:
-        label: target
-        type: text
     status:
         label: status
-        type: text
+        type: partial
+        path: ~/plugins/zsoft/base/models/advertise/_status.htm
+        width: 150px
     created_at:
         label: created_at
-        type: datetime
+        type: text
+        width: 150px

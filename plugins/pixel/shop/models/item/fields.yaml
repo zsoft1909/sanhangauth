@@ -201,6 +201,12 @@ secondaryTabs:
             mode: image
             span: full
             tab: Misc
+        image_hover:
+            label: 'Hình ảnh khi hover'
+            type: mediafinder
+            mode: image
+            span: full
+            tab: Misc
         is_visible:
             label: 'pixel.shop::lang.fields.visible'
             span: full
