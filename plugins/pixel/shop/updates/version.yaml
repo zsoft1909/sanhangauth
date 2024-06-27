@@ -46,3 +46,6 @@
 1.1.23:
     - 'Updated table pixel_shop_items'
     - builder_table_update_pixel_shop_items.php
+1.1.24:
+    - 'Updated table pixel_shop_items'
+    - builder_table_update_pixel_shop_items_2.php
