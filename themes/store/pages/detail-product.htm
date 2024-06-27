@@ -263,10 +263,22 @@ function onEnd(){
 										<a href="{{ 'detail-product'|page({slug: val.slug}) }}" title="{{ val.name }}">
 	                                        <img src="{{ val.image_default|media }}" alt="{{ val.name }}">
 	                                    </a>
+	                                    {% if val.image_hover is not empty %}
+						                    <a href="{{ 'detail-product'|page({slug: val.slug}) }}" title="{{ val.name }}">
+						                    	<img src="{{ val.image_hover|media }}" alt="{{ val.name }}">
+						                    </a>
+						                {% endif %}
 										<div class="bg-overlay">
 											<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-												<a href="#" class="btn btn-dark mr-2"><i class="icon-shopping-cart"></i></a>
-												<a href="{{ 'detail-product'|page({slug: product.slug}) }}?display=popup" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
+												{% if val.is_with_variants == 0 %}
+													<a href="#" class="btn btn-dark mr-2 ajax-addtocart" 
+													data-request-data="id: {{ val.id }}, quantity: 1, price: {{ val.price }}" 
+													data-attach-loading="" data-request-form data-request="onAddToCart" 
+													data-request-flash data-request-success="CartButton.onSuccess(data)"><i class="icon-shopping-cart"></i></a>
+												{% else %}
+													<a href="{{ 'detail-product'|page({slug: val.slug}) }}?display=popup" class="btn btn-dark" data-lightbox="ajax"><i class="icon-shopping-cart"></i></a>
+												{% endif %}
+												<a href="{{ 'detail-product'|page({slug: val.slug}) }}?display=popup" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
 											</div>
 											<div class="bg-overlay-bg bg-transparent"></div>
 										</div>
