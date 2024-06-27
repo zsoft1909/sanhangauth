@@ -65,3 +65,33 @@
 .top-links-sub-menu .top-links-item > a > img {
 	height: auto;
 }
+.multi_language > ul {
+	list-style: none;
+}
+#top-bar .top-links{
+	border-bottom: 0;
+}
+
+
+
+@media (max-width: 767px) {
+	.top-links-sub-menu, .top-links-section{
+	  	left: inherit;
+	  	right: 0;
+	}
+	#layout-header.home #top-cart{
+		position: absolute;
+		top: -48px;
+		right: 0;
+	}
+	#layout-header.home #primary-menu-trigger{
+		position: relative;
+		right: 24px;
+	}
+	.content-wrap{
+	  	padding: 20px 0;
+	}
+	.col-xl-8.min-vh-50{
+	  	min-height: auto !important;
+	}
+}
