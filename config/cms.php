@@ -468,7 +468,7 @@ return [
     'enableBackendServiceWorkers' => false,
     'fileDefinitions' => [
         'defaultExtensions' => ['doc', 'docx','zip','mdb','jpg','jpeg','bmp','png',
-        'gif','css','js','woff','svg','ttf','eot','json','md','less','sass','scss','pdf']
+        'gif','css','js','woff','svg','ttf','eot','json','md','less','sass','scss','pdf', 'webp']
     ],
 
 
