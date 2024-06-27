@@ -7,7 +7,7 @@ if ($record->image != '') {
             data-handler="onShowImage"
             data-request-data="image:\''.$record->image.'\'"
             href="javascript:;">
-           <img src="'.url ('/').'/storage/app/media'.$record->image.'" height="42" >
+           <img src="'.\System\Classes\MediaLibrary::url($record->image).'" height="42" >
         </a>
     ';
 }

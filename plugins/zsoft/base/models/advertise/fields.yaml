@@ -3,7 +3,7 @@ fields:
         label: 'Vị trí băng quản cáo'
         span: auto
         options:
-            1: 'Trang chủ (Cạnh Slider)'
+            1: 'QC Trang chủ (Cạnh Slider)'
             2: 'Đối tác, thương hiệu'
         type: dropdown
     name:
