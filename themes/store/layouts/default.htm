@@ -20,7 +20,7 @@ forceUrl = 0
 ==
 <?php
 function onStart(){
-        $this['version'] = '1.3';
+        $this['version'] = '1.0';
         $this['totalOrder'] = 1019 + \Pixel\Shop\Models\Order::count();
         $this['totalUser'] = 421 + \RainLab\User\Models\User::count();
         $this['custom_styles'] = \Backend\Models\EditorSetting::renderCss();
@@ -85,7 +85,7 @@ function onStart(){
 
         <div id="wrapper" class="clearfix">
             <!-- Header -->
-            <div id="layout-header">
+            <div id="layout-header" class="{{ is_page }}">
                 {% partial 'site/header' ~ is_page %}
             </div>
 

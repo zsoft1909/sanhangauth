@@ -32,13 +32,13 @@
 </div>
 {% endif %}
 
-<div id="top-cart" class="header-misc-icon d-none d-sm-block">
+<div id="top-cart" class="header-misc-icon">
     <a href="{{ 'cart'|page }}" id="top-cart-trigger">
     	<i class="icon-line-bag"></i>
     	<span class="top-cart-number" id="cart_count">{{ cart.items|length }}</span>
     </a>
-    {% if cart.items is not empty %}
-	    <div class="top-cart-content" id="cart-minimap">
+    <div class="top-cart-content" id="cart-minimap">
+    	{% if cart.items is not empty %}
 	        <div class="top-cart-title">
 	            <h4>Shopping Cart</h4>
 	        </div>
@@ -60,10 +60,6 @@
 		            </div>
 	            {% endfor %}
 	        </div>
-	        <div class="top-cart-action">
-	            <span class="top-checkout-price" id="cart_total">{{ cart.total|currency({format: 'short'})  }}</span>
-	            <a href="{{ 'cart'|page }}" class="button button-3d button-small m-0">View Cart</a>
-	        </div>
-	    </div>
-    {% endif %}
+	    {% endif %}
+    </div>
 </div><!-- #top-cart end -->

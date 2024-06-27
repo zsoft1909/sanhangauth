@@ -13,16 +13,16 @@ function onStart(){
 <div id="top-bar">
     <div class="container">
         <div class="row justify-content-between align-items-center">
-            <div class="col-12 col-md-auto">
+            <div class="col-9 col-md-auto">
                 <p class="mb-0 py-2 text-center text-md-left">
                     <strong>Call:</strong> {{ setting.phone }} | <strong>Email:</strong> {{ setting.email }}
                 </p>
             </div>
-            <div class="col-12 col-md-auto">
+            <div class="col-3 col-md-auto">
                 <!-- Top Links
                 ============================================= -->
                 <div class="top-links on-click">
-                    <ul class="top-links-container">
+                    <ul class="top-links-container justify-content-end">
                         <li class="top-links-item d-none"><a href="#">{{ currencyAvtive.currency_code }}</a>
                             <ul class="top-links-sub-menu">
                                 {% for k, val in currency %}
@@ -33,7 +33,7 @@ function onStart(){
                         <li class="top-links-item">
                             {% component 'localePicker' %}
                         </li>
-                        <li class="top-links-item"><a href="#">Login</a>
+                        <li class="top-links-item d-none"><a href="#">Login</a>
                             <div class="top-links-section">
                                 <form id="top-login" autocomplete="off" data-request="onSignin"
                                     data-request-success="Message.resetFormData()"
@@ -68,7 +68,7 @@ function onStart(){
 ============================================= -->
 <header id="header" class="header-size-sm">
     <div class="container">
-        <div class="header-row flex-column flex-lg-row justify-content-center justify-content-lg-start">
+        <div class="header-row flex-row justify-content-between">
             <!-- Logo
             ============================================= -->
             <div id="logo" class="mr-0 mr-lg-auto">
@@ -77,7 +77,7 @@ function onStart(){
                 </a>
             </div><!-- #logo end -->
             {% if setting.extras is not empty %}
-                <div class="header-misc mb-4 mb-lg-0 order-lg-last">
+                <div class="header-misc mb-4 mb-lg-0 order-lg-last d-none d-sm-block">
                     <ul class="header-extras mr-0 mr-lg-4">
                         {% for k, val in setting.extras %}
                             <li>
@@ -91,6 +91,9 @@ function onStart(){
                     </ul>
                 </div>
             {% endif %}
+            <div id="primary-menu-trigger">
+                <svg class="svg-trigger" viewBox="0 0 100 100"><path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20"></path><path d="m 30,50 h 40"></path><path d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20"></path></svg>
+            </div>
         </div>
     </div>
 
@@ -102,9 +105,6 @@ function onStart(){
                     ============================================= -->
                     {% component 'cartButton' %}
                     <!-- #top-cart end -->
-                </div>
-                <div id="primary-menu-trigger">
-                    <svg class="svg-trigger" viewBox="0 0 100 100"><path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20"></path><path d="m 30,50 h 40"></path><path d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20"></path></svg>
                 </div>
                 <!-- Primary Navigation
                 ============================================= -->

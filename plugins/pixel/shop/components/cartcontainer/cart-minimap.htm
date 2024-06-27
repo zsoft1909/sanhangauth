@@ -20,4 +20,8 @@
             </div>
         {% endfor %}
     </div>
+    <div class="top-cart-action">
+        <span class="top-checkout-price" id="cart_total">{{ cart.total|currency({format: 'short'})  }}</span>
+        <a href="{{ 'cart'|page }}" class="button button-3d button-small m-0">View Cart</a>
+    </div>
 {% endif %}
