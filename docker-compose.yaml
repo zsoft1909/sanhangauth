@@ -1,0 +1,49 @@
+services:
+  web:
+    build:
+      context: ./docker/local/web
+      dockerfile: Dockerfile
+    container_name: sanhangauth
+    restart: ${RESTART:-no}
+    environment:
+      - XDEBUG_MODE=debug
+      - XDEBUG_CLIENT_PORT=9003
+      - XDEBUG_CLIENT_HOST=${XDEBUG_CLIENT_HOST}
+      - XDEBUG_START_WITH_REQUEST=yes
+    depends_on:
+      - mysql
+    volumes:
+      - .:/var/www/html
+    networks:
+      default:
+        ipv4_address: $APP_HOST
+  mysql:
+    container_name: sanhangauth-db
+    image: mysql:8.0
+    restart: ${RESTART:-no}
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=sanhangauth
+      - MYSQL_USER=zsoft
+      - MYSQL_PASSWORD=123456
+    volumes:
+      - sanhangauth_mysql:/var/lib/mysql
+    networks:
+      default:
+        ipv4_address: $MYSQL_IP_HOST
+  phpmyadmin:
+    container_name: sanhangauth-pma
+    image: phpmyadmin
+    restart: ${RESTART:-no}
+    links:
+      - mysql:db
+    networks:
+      default:
+        ipv4_address: $PMA_IP
+volumes:
+  sanhangauth_mysql:
+    driver: local
+networks:
+  default:
+    external: true
+    name: $NETWORK_NAME
